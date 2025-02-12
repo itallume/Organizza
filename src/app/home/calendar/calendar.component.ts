@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, model} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { Activity } from '../../../shared/model/Activity';
+import { Activity } from '../../shared/model/Activity';
 
 /** @title Datepicker inline calendar example */
 @Component({
