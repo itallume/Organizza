@@ -7,6 +7,7 @@ import {MatInput, MatInputModule} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
+import {MatIcon} from "@angular/material/icon";
 
 
 
@@ -15,13 +16,14 @@ import {ReactiveFormsModule} from '@angular/forms';
     LoginComponent,
     RegisterComponent
   ],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButton,
-    RouterLink,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButton,
+        RouterLink,
+        ReactiveFormsModule,
+        MatIcon
+    ]
 })
 export class UserModule { }

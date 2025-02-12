@@ -12,6 +12,7 @@ import {User} from '../../shared/model/user';
 })
 export class RegisterComponent implements OnInit{
   registerForm!: FormGroup;
+  hidePw = true;
   constructor(
     private fb: FormBuilder,
     private userService: UserService,

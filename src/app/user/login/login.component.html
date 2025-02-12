@@ -10,7 +10,8 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Senha</mat-label>
-      <input matInput id="password" formControlName="password">
+      <input matInput  [type]="hidePw ? 'password' : 'text'" formControlName="password" required>
+      <mat-icon matSuffix (click)="hidePw = !hidePw">{{hidePw ? 'visibility_off' : 'visibility'}}</mat-icon>
       <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
         É necessário informar uma senha.
       </mat-error>

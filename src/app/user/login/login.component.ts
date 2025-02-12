@@ -12,6 +12,9 @@ import {User} from '../../shared/model/user';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  errorMessage: string | null = null;
+  hidePw = true;
+
 
   constructor(
     private fb: FormBuilder,
@@ -31,20 +34,17 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;
-
       this.userService.login(email, password)
         .subscribe({
           next: (res: User | null) => {
-            if (res && res.id) { // Verifica se o usuário foi retornado e possui um ID válido
+            if (res && res.id) {
               this.router.navigate(['home']);
             } else {
-              // Opcional: Exibir uma mensagem de erro ao usuário
-              console.error('Usuário não encontrado ou inválido.');
+              this.errorMessage = 'Usuário não encontrado ou credenciais inválidas.';
             }
           },
           error: (err) => {
-            console.error('Erro ao fazer login:', err);
-            // Opcional: Exibir uma mensagem de erro ao usuário
+            this.errorMessage = 'Erro ao fazer login:' + err;
           }
         });
     }

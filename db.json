@@ -23,6 +23,12 @@
       "name": "paulo",
       "email": "paulo@email",
       "password": "1234"
+    },
+    {
+      "id": "8545",
+      "name": "fernando",
+      "email": "fernando@email",
+      "password": "1234"
     }
   ],
   "activities": [
