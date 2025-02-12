@@ -11,7 +11,6 @@ export class Activity {
     public pricePayed: number = 0,
     public done: boolean = false,
     public paied: boolean = false,
-
     ) {
   }
 }

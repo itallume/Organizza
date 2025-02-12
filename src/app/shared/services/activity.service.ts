@@ -7,7 +7,7 @@ import { Activity } from '../model/Activity';
 })
 export class ActivityService {
 
-  private URL_ACTIVITIES = 'http://localhost:3000/activity';
+  private URL_ACTIVITIES = 'http://localhost:3000/activities';
 
   constructor(private http: HttpClient) { }
 
