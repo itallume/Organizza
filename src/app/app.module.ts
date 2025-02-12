@@ -8,18 +8,20 @@ import { CalendarComponent } from './home/calendar/calendar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HomeModule } from './home/home.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MatCardModule,
     MatDatepickerModule,
-    HomeModule
+    HomeModule,
+    HttpClientModule
   ],
   providers: [
     provideAnimationsAsync()
