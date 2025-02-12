@@ -1,17 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Activity } from '../model/Activity';
+import {Activity} from '../model/activity';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
-
+  public selectedDate:Date;
   private URL_ACTIVITIES = 'http://localhost:3000/activities';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.selectedDate = new Date();
+   }
 
-  cadastrar(activity: Activity): Observable<Activity> {
+  register(activity: Activity): Observable<Activity> {
     return this.http.post<Activity>(this.URL_ACTIVITIES, activity);
   }
 
