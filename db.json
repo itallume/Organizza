@@ -1,0 +1,57 @@
+{
+    "users": [],
+    "activities": [
+        {
+            "id": 1,
+            "title": "Troca de Tela de Celular",
+            "description": "Substituição da tela quebrada por uma nova.",
+            "date": "2025-02-15T10:00:00.000Z",
+            "address": "Loja TechFix - Rua Central, 45",
+            "clientNumber": 201,
+            "clientName": "Pedro Almeida",
+            "price": 350.00,
+            "pricePayed": 350.00,
+            "done": true,
+            "paied": true
+          },
+          {
+            "id": 2,
+            "title": "Manutenção de Notebook",
+            "description": "Limpeza interna e troca de pasta térmica.",
+            "date": "2025-02-16T14:30:00.000Z",
+            "address": "Loja TechFix - Rua Central, 45",
+            "clientNumber": 202,
+            "clientName": "Mariana Costa",
+            "price": 200.00,
+            "pricePayed": 100.00,
+            "done": false,
+            "paied": false
+          },
+          {
+            "id": 3,
+            "title": "Instalação de Software",
+            "description": "Formatação e instalação de pacotes essenciais.",
+            "date": "2025-02-17T09:00:00.000Z",
+            "address": "Loja TechFix - Rua Central, 45",
+            "clientNumber": 203,
+            "clientName": "Lucas Ferreira",
+            "price": 120.00,
+            "pricePayed": 120.00,
+            "done": true,
+            "paied": true
+          },
+          {
+            "id": 10,
+            "title": "Configuração de Rede Wi-Fi",
+            "description": "Ajuste e otimização do roteador para melhor desempenho.",
+            "date": "2025-02-18T16:00:00.000Z",
+            "address": "Residência do Cliente",
+            "clientNumber": 204,
+            "clientName": "Fernanda Lima",
+            "price": 150.00,
+            "pricePayed": 0.00,
+            "done": false,
+            "paied": false
+          }
+    ]
+}

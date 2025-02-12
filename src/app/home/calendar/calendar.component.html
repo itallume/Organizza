@@ -2,8 +2,5 @@
     <mat-calendar [(selected)]="selected"></mat-calendar>
 </mat-card>
 
-@if (selected()?.getDate() === atividade.data.getDate()) {
-  <h1>nome: {{atividade.name}} data: {{atividade.data}}</h1>
-}
   <p>Selected date: {{selected()}}</p>
   

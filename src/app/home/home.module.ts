@@ -5,6 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ActivityCardComponent } from './activity-card/activity-card.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ActivityService } from '../shared/services/activity.service';
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -24,4 +26,5 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ActivityCardComponent
   ]
 })
-export class HomeModule { }
+export class HomeModule {
+ }
