@@ -107,34 +107,6 @@
       "pricePayed": 2,
       "done": false,
       "paied": false
-    },
-    {
-      "id": 13,
-      "userID": "563c",
-      "title": "testeFinal",
-      "description": "Deu Certoooo",
-      "date": "2025-2-13",
-      "address": "rua",
-      "clientNumber": 247,
-      "clientName": "itallo",
-      "price": 250,
-      "pricePayed": 2,
-      "done": false,
-      "paied": false
-    },
-    {
-      "id": 14,
-      "userID": "563c",
-      "title": "tit",
-      "description": "desc",
-      "date": "2025-2-16",
-      "address": "rua 123",
-      "clientNumber": 0,
-      "clientName": "cliente joao",
-      "price": 0,
-      "pricePayed": 0,
-      "done": false,
-      "paied": false
     }
   ]
 }

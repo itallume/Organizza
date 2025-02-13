@@ -12,13 +12,15 @@
       </mat-expansion-panel-header>
       <p>{{activity.clientName}}</p>
       <p>{{activity.clientNumber}}</p>
+      <button mat-fab (click)="deleteActivity(activity.id)" >
+        <mat-icon>delete</mat-icon>
+      </button>
+
     </mat-expansion-panel>}
   </mat-accordion>
 
 
   <button mat-fab (click)="addActivity()" >
-
-
     <mat-icon>add</mat-icon>
   </button>
 

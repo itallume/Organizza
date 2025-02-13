@@ -36,7 +36,7 @@ export class ActivityService {
 
   }
 
-  remover(id: string): Observable<any> {
+  remove(id: number): Observable<any> {
     return this.http.delete(`${this.URL_ACTIVITIES}/${id}`);
   }
 

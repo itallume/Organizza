@@ -24,6 +24,7 @@ import {
 } from '@angular/material/dialog';
 import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatNativeDateModule} from '@angular/material/core';
+import { ActivityDeleteComponent } from './activity-delete/activity-delete.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     ActivityCardComponent,
     CalendarCardComponent,
     ActivityRegisterComponent,
+    ActivityDeleteComponent,
   ],
   imports: [
     CommonModule,
@@ -66,6 +68,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     ActivityCardComponent,
     CalendarCardComponent,
     ActivityRegisterComponent,
+    ActivityDeleteComponent,
   ]
 })
 export class HomeModule {

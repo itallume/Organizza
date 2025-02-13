@@ -7,6 +7,7 @@ import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/model/user';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivityRegisterComponent} from '../activity-register/activity-register.component';
+import {ActivityDeleteComponent} from '../activity-delete/activity-delete.component';
 
 
 
@@ -29,13 +30,11 @@ export class ActivityCardComponent implements OnInit {
     public userService: UserService,
     private dialog: MatDialog
   ) {
-
     this.user = this.userService.getCurrentUser();
 
   }
 
   ngOnInit(): void {
-
     this.activityService.updateActivities();
   }
 
@@ -44,16 +43,12 @@ export class ActivityCardComponent implements OnInit {
 
     // Abre o modal
     const dialogRef = this.dialog.open(ActivityRegisterComponent, {
-      height: '800px',
-      width: '1000px', // Defina o tamanho do modal
-      data: {} // Passe dados adicionais, se necessário
+      width: '250px'
     });
 
-    // Quando o modal é fechado, você pode capturar os dados retornados
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
-        // Aqui você pode adicionar a lógica para salvar a atividade
         this.activityService.register(new Activity(result.id,
           this.user.id,
           result.title,
@@ -63,10 +58,24 @@ export class ActivityCardComponent implements OnInit {
           result.clientNumber,
           result.clientName,
           result.price,
-          result.pricePayed, // Garante um valor padrão caso seja undefined
+          result.pricePayed,
           result.done,
-          result.paied )).subscribe(newActivity => console.log(newActivity)); // Exemplo: adicionar a atividade ao serviço
+          result.paied )).subscribe(newActivity => undefined);
       }
     });
   }
+
+  deleteActivity(id: number) {
+    this.dialog.open(ActivityDeleteComponent, {
+      width: '250px',
+      enterAnimationDuration: '0.5s',
+      exitAnimationDuration: '0.5s',
+    }).afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.activityService.remove(id).subscribe(res => this.activityService.updateActivities());
+      }
+    });
+
+  }
+
 }
