@@ -6,24 +6,28 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ActivityCardComponent } from './activity-card/activity-card.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ActivityService } from '../shared/services/activity.service';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { CalendarCardComponent } from './calendar-card/calendar-card.component';
 
 
 
 @NgModule({
   declarations: [
     CalendarComponent,
-    ActivityCardComponent
+    ActivityCardComponent,
+    CalendarCardComponent,
   ],
   imports: [
     CommonModule,
     MatCardModule,
     MatDatepickerModule,
     MatExpansionModule,
+    HttpClientModule,
   ],
   exports: [
     CalendarComponent,
-    ActivityCardComponent
+    ActivityCardComponent,
+    CalendarCardComponent,
   ]
 })
 export class HomeModule {

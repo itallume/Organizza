@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './user/login/login.component';
 import {RegisterComponent} from './user/register/register.component';
 import {CalendarComponent} from './home/calendar/calendar.component';
+import {CalendarCardComponent} from './home/calendar-card/calendar-card.component';
 
 const routes: Routes =
   [
@@ -13,7 +14,7 @@ const routes: Routes =
       component: RegisterComponent
     },
     { path : 'home',
-      component: CalendarComponent
+      component: CalendarCardComponent
     }
   ];
 

@@ -29,14 +29,21 @@
       "name": "fernando",
       "email": "fernando@email",
       "password": "1234"
+    },
+    {
+      "id": "563c",
+      "name": "itallo",
+      "email": "itallo.g",
+      "password": "123456"
     }
   ],
   "activities": [
     {
       "id": "1",
+      "userID": "550e",
       "title": "Troca de Tela de Celular",
       "description": "Substituição da tela quebrada por uma nova.",
-      "date": "2025-02-15T10:00:00.000Z",
+      "date": "2025-02-13",
       "address": "Loja TechFix - Rua Central, 45",
       "clientNumber": 201,
       "clientName": "Pedro Almeida",
@@ -47,9 +54,10 @@
     },
     {
       "id": "2",
+      "userID": "550e",
       "title": "Manutenção de Notebook",
       "description": "Limpeza interna e troca de pasta térmica.",
-      "date": "2025-02-16T14:30:00.000Z",
+      "date": "2025-02-12",
       "address": "Loja TechFix - Rua Central, 45",
       "clientNumber": 202,
       "clientName": "Mariana Costa",
@@ -60,9 +68,10 @@
     },
     {
       "id": "3",
+      "userID": "550e",
       "title": "Instalação de Software",
       "description": "Formatação e instalação de pacotes essenciais.",
-      "date": "2025-02-17T09:00:00.000Z",
+      "date": "2025-02-17",
       "address": "Loja TechFix - Rua Central, 45",
       "clientNumber": 203,
       "clientName": "Lucas Ferreira",
@@ -73,14 +82,43 @@
     },
     {
       "id": "10",
+      "userID": "b627",
       "title": "Configuração de Rede Wi-Fi",
       "description": "Ajuste e otimização do roteador para melhor desempenho.",
-      "date": "2025-02-18T16:00:00.000Z",
+      "date": "2025-02-18",
       "address": "Residência do Cliente",
       "clientNumber": 204,
       "clientName": "Fernanda Lima",
       "price": 150,
       "pricePayed": 0,
+      "done": false,
+      "paied": false
+    },
+    {
+      "id": 13,
+      "userID": "b627",
+      "title": "testeFinal",
+      "description": "Deu Certoooo",
+      "date": "2025-02-15",
+      "address": "rua",
+      "clientNumber": 247,
+      "clientName": "itallo",
+      "price": 250,
+      "pricePayed": 2,
+      "done": false,
+      "paied": false
+    },
+    {
+      "id": 13,
+      "userID": "b627",
+      "title": "testeFinal",
+      "description": "Deu Certoooo",
+      "date": "2025-02-15",
+      "address": "rua",
+      "clientNumber": 247,
+      "clientName": "itallo",
+      "price": 250,
+      "pricePayed": 2,
       "done": false,
       "paied": false
     }

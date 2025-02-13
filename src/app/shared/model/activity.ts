@@ -1,9 +1,10 @@
 export class Activity {
   constructor(
     public id: number,
+    public userID: String,
     public title: string,
     public description: string,
-    public date:Date,
+    public date: string,
     public address: string,
     public clientNumber: number,
     public clientName: string,

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {Activity} from '../model/activity';
 
 @Injectable({
@@ -16,10 +16,11 @@ export class ActivityService {
 
   register(activity: Activity): Observable<Activity> {
     return this.http.post<Activity>(this.URL_ACTIVITIES, activity);
+
   }
 
-  getActivityPerDay(): Observable<Activity[]> {
-    return this.http.get<Activity[]>(this.URL_ACTIVITIES);
+  getActivityPerDay(userID:string): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.URL_ACTIVITIES}?userID=${userID}&date=${this.selectedDate.getFullYear() + '-' + (this.selectedDate.getMonth() + 1) + '-' + this.selectedDate.getDate()}`);
   }
 
   remover(id: string): Observable<any> {

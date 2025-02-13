@@ -2,6 +2,9 @@ import {ChangeDetectionStrategy, Component, Input, signal, OnInit} from '@angula
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ActivityService } from '../../shared/services/activity.service';
 import {Activity} from '../../shared/model/activity';
+import {Observable} from 'rxjs';
+import {UserService} from '../../shared/services/user.service';
+import {User} from '../../shared/model/user';
 
 
 
@@ -9,22 +12,28 @@ import {Activity} from '../../shared/model/activity';
  * @title Basic expansion panel
  */
 @Component({
-  selector: 'acticity-card-component',
+  selector: 'activity-card-component',
   templateUrl: 'activity-card.component.html',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ActivityCardComponent {
+export class ActivityCardComponent implements OnInit{
   readonly panelOpenState = signal(false);
+
   public activities:Array<Activity> = [];
+  public user:User | null;
 
-  constructor(private activityService:ActivityService){
 
+  constructor(public activityService:ActivityService, public userService:UserService) {
+    this.user = this.userService.getCurrentUser();
+    console.log(this.user);
   }
-  ngOnInit():void{
-    this.activityService.getActivityPerDay().subscribe(
-      activities => this.activities = activities
-    )
-    console.log(this.activities)
+
+  ngOnInit(): void {
+
+    // @ts-ignore
+    this.activityService.getActivityPerDay(this.user.id).subscribe(activities => {
+      this.activities = activities;
+    });
   }
 }

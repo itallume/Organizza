@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, model} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {ActivityService} from '../../shared/services/activity.service';
 
 
 /** @title Datepicker inline calendar example */
@@ -14,11 +15,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarComponent {
-  selected = model<Date | null>(null);
-  //atividade: Activity =  new Activity(new Date('2025-02-14'));
-
-  constructor(){
-   // console.log(this.atividade)
-    console.log( 'oi ' + this.selected)
+  constructor(protected activityService: ActivityService) {
   }
+
 }
