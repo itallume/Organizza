@@ -1,16 +1,28 @@
 
-@for (activity of activities; track activity.id;){
-  <mat-accordion class="width">
-    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+
+
+  <mat-accordion>
+    @for (activity of activityService.activities; track activity.id){
+    <mat-expansion-panel (opened)="panelOpenState.set(true)"  (closed)="panelOpenState.set(false)">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{activity.title}} </mat-panel-title>
+        <mat-panel-title>{{activity.title}}</mat-panel-title>
         <mat-panel-description>
-          Currently I am {{panelOpenState() ? 'open' : 'closed'}}
+          {{ activity.description }} {{panelOpenState() ? 'open' : 'closed'}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>{{activity.description}}</p>
-    </mat-expansion-panel>
+      <p>{{activity.clientName}}</p>
+      <p>{{activity.clientNumber}}</p>
+    </mat-expansion-panel>}
   </mat-accordion>
-}
+
+
+  <button mat-fab (click)="addActivity()" >
+
+
+    <mat-icon>add</mat-icon>
+  </button>
+
+
+
 
 

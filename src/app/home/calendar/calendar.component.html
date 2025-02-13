@@ -1,5 +1,5 @@
 <mat-card class="demo-inline-calendar-card">
-    <mat-calendar [(selected)]="activityService.selectedDate"></mat-calendar>
+  <mat-calendar [(selected)]="activityService.selectedDate" (selectedChange)="onDateChange()"></mat-calendar>
 </mat-card>
 
-  <p>Selected date: {{activityService.selectedDate}}</p>
+<p>Selected date: {{ activityService.selectedDate | date }}</p>

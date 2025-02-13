@@ -17,5 +17,7 @@ import {ActivityService} from '../../shared/services/activity.service';
 export class CalendarComponent {
   constructor(protected activityService: ActivityService) {
   }
-
+  onDateChange() {
+    this.activityService.updateActivities();
+  }
 }

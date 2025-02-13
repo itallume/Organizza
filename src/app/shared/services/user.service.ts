@@ -10,10 +10,10 @@ import {map, Observable, tap} from 'rxjs';
 export class UserService {
   private URL_USERS = 'http://localhost:3000/users';
 
-  private currentUser: User | null = null;
+  private currentUser: User;
 
   constructor(private http: HttpClient) {
-
+    this.currentUser = new User('563c', 'itallo', 'itallo.g', '123456');
   }
 
   getUsers(): Observable<User[]> {
@@ -37,11 +37,8 @@ export class UserService {
     return this.http.post<User>(this.URL_USERS, user);
   }
 
-  getCurrentUser(): User | null {
+  getCurrentUser(): User {
     return this.currentUser;
   }
 
-  logout(): void {
-    this.currentUser = null;
-  }
 }

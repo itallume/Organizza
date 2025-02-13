@@ -11,6 +11,8 @@ import { HomeModule } from './home/home.module';
 import {UserModule} from './user/user.module';
 import {HttpClientModule} from '@angular/common/http';
 import { HeaderComponent } from './shared/components/header/header.component';
+import {MAT_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
+import {DateAdapter} from 'angular-calendar';
 
 @NgModule({
   declarations: [
@@ -26,9 +28,24 @@ import { HeaderComponent } from './shared/components/header/header.component';
     HomeModule,
     UserModule,
     HttpClientModule,
+    MatNativeDateModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+        }
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

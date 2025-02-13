@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Criar Nova Atividade</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <input matInput placeholder="Título" [(ngModel)]="activity.title" name="title" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <textarea matInput placeholder="Descrição" [(ngModel)]="activity.description" name="description" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data</mat-label>
+      <input matInput
+             [matDatepicker]="picker"
+             [(ngModel)]="activity.date"
+             name="date"
+             required>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <input matInput placeholder="Endereço" [(ngModel)]="activity.address" name="address" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput placeholder="Nome do Cliente" [(ngModel)]="activity.clientName" name="clientName" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput type="number" placeholder="Número do Cliente" [(ngModel)]="activity.clientNumber" name="clientNumber" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.price" name="price" required>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="activity.done" name="done">Concluído</mat-checkbox>
+    <mat-checkbox [(ngModel)]="activity.paied" name="paied">Pago</mat-checkbox>
+
+    <mat-dialog-actions>
+      <button mat-button type="button" mat-dialog-close>Cancelar</button>
+      <button mat-button type="submit" color="primary">Criar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

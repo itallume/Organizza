@@ -1,0 +1,15 @@
+.main-container{
+  display: grid;
+  grid-template-columns: 0.4fr 1.6fr;
+
+}
+
+.card{
+  margin-top: 15px;
+}
+
+.card-content{
+
+}
+
+
