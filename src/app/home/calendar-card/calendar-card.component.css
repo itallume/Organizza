@@ -1,14 +1,24 @@
 .main-container{
   display: grid;
+  margin-left: 10%;
   grid-template-columns: 0.4fr 1.6fr;
-
+  width: 80%;
+  height: 100%;
 }
 
 .card{
-  margin-top: 15px;
+  margin-top: 35px;
+
 }
 
-.card-content{
+activity-card-component {
+  margin: 0px 10px 0px 10px;
+}
+
+.calendar{
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 
 }
 

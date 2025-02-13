@@ -1,22 +1,24 @@
-<div class="main-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput id="email" formControlName="email">
-      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-        É necessário informar o email.
-      </mat-error>
-    </mat-form-field>
+<div class="dad">
+  <div class="main-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email">
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          É necessário informar o email.
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Senha</mat-label>
-      <input matInput  [type]="hidePw ? 'password' : 'text'" formControlName="password" required>
-      <mat-icon matSuffix (click)="hidePw = !hidePw">{{hidePw ? 'visibility_off' : 'visibility'}}</mat-icon>
-      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput  [type]="hidePw ? 'password' : 'text'" formControlName="password" required>
+        <mat-icon matSuffix (click)="hidePw = !hidePw">{{hidePw ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
         É necessário informar uma senha.
-      </mat-error>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Login</button>
-    <p>Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
-  </form>
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Login</button>
+      <p>Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
+    </form>
+  </div>
 </div>

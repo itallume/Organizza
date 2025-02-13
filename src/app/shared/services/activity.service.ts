@@ -18,7 +18,8 @@ export class ActivityService {
    }
 
   register(activity: Activity): Observable<Activity> {
-    return this.http.post<Activity>(this.URL_ACTIVITIES, activity);
+    const { id, ...activityWithoutId } = activity;
+    return this.http.post<Activity>(this.URL_ACTIVITIES, activityWithoutId);
 
   }
   updateActivities() {
@@ -29,14 +30,11 @@ export class ActivityService {
   }
 
   getActivityPerDay(userID:string): Observable<Activity[]> {
-    console.log(this.selectedDate);
-    console.log(userID)
-    console.log(this.selectedDate.getFullYear() + '-' + (this.selectedDate.getMonth() + 1) + '-' + this.selectedDate.getDate());
     return this.http.get<Activity[]>(`${this.URL_ACTIVITIES}?userID=${userID}&date=${this.selectedDate.getFullYear() + '-' + (this.selectedDate.getMonth() + 1) + '-' + this.selectedDate.getDate()}`);
 
   }
 
-  remove(id: number): Observable<any> {
+  remove(id: string): Observable<any> {
     return this.http.delete(`${this.URL_ACTIVITIES}/${id}`);
   }
 

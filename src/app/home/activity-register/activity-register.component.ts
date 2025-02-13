@@ -12,7 +12,7 @@ class ActivityModalComponent {
   styleUrl: './activity-register.component.css'
 })
 export class ActivityRegisterComponent {
-  activity: Activity = new Activity(0, '', '', '', '', '','', '',0);
+  activity: Activity = new Activity('', '', '', '', '', '','', '',0);
 
   constructor(
     public dialogRef: MatDialogRef<ActivityModalComponent>,

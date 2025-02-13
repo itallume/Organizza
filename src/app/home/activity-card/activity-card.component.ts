@@ -17,6 +17,7 @@ import {ActivityDeleteComponent} from '../activity-delete/activity-delete.compon
 @Component({
   selector: 'activity-card-component',
   templateUrl: 'activity-card.component.html',
+  styleUrls: ['activity-card.component.css'],
   standalone: false,
 })
 export class ActivityCardComponent implements OnInit {
@@ -68,7 +69,7 @@ export class ActivityCardComponent implements OnInit {
           result.done,
           result.paied );
 
-        this.activityService.register(newActvity).subscribe(newActivity => undefined);
+        this.activityService.register(newActvity).subscribe(newActivity => this.activityService.updateActivities());
       }
       else {
         alert("Preencha os campos obrigatórios");
@@ -76,7 +77,7 @@ export class ActivityCardComponent implements OnInit {
     });
   }
 
-  deleteActivity(id: number) {
+  deleteActivity(id: string) {
     this.dialog.open(ActivityDeleteComponent, {
       width: '250px',
       enterAnimationDuration: '0.5s',

@@ -1,6 +1,6 @@
 export class Activity {
   constructor(
-    public id: number,
+    public id: string,
     public userID: String,
     public title: string,
     public description: string,
