@@ -6,7 +6,7 @@ export class Activity {
     public description: string,
     public date: string,
     public address: string,
-    public clientNumber: number,
+    public clientNumber: string,
     public clientName: string,
     public price: number,
     public pricePayed: number = 0,

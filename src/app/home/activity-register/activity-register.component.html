@@ -2,11 +2,11 @@
 <mat-dialog-content>
   <form (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
-      <input matInput placeholder="Título" [(ngModel)]="activity.title" name="title" required>
+      <input matInput placeholder="Título*" [(ngModel)]="activity.title" name="title" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <textarea matInput placeholder="Descrição" [(ngModel)]="activity.description" name="description" required></textarea>
+      <textarea matInput placeholder="Descrição*" [(ngModel)]="activity.description" name="description" required></textarea>
     </mat-form-field>
 
     <mat-form-field>
@@ -30,18 +30,25 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <input matInput type="number" placeholder="Número do Cliente" [(ngModel)]="activity.clientNumber" name="clientNumber" required>
+
+      <input matInput placeholder="Número do Cliente" [(ngModel)]="activity.clientNumber" name="clientNumber" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
+      <p> Valor total</p>
       <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.price" name="price" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <p> Valor pago</p>
+      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.pricePayed" name="price">
     </mat-form-field>
 
     <mat-checkbox [(ngModel)]="activity.done" name="done">Concluído</mat-checkbox>
     <mat-checkbox [(ngModel)]="activity.paied" name="paied">Pago</mat-checkbox>
 
     <mat-dialog-actions>
-      <button mat-button type="button" mat-dialog-close>Cancelar</button>
+      <button mat-button type="button"  mat-dialog-close >Cancelar</button>
       <button mat-button type="submit" color="primary">Criar</button>
     </mat-dialog-actions>
   </form>

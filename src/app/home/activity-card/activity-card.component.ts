@@ -41,15 +41,21 @@ export class ActivityCardComponent implements OnInit {
   addActivity() {
 
 
-    // Abre o modal
+
     const dialogRef = this.dialog.open(ActivityRegisterComponent, {
-      width: '250px'
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-
-        this.activityService.register(new Activity(result.id,
+      if (
+        result &&
+        result.title &&
+        result.description &&
+        result.date &&
+        result.title.trim() !== '' &&
+        result.description.trim() !== ''
+      ) {
+        const newActvity = new Activity(result.id,
           this.user.id,
           result.title,
           result.description,
@@ -60,7 +66,12 @@ export class ActivityCardComponent implements OnInit {
           result.price,
           result.pricePayed,
           result.done,
-          result.paied )).subscribe(newActivity => undefined);
+          result.paied );
+
+        this.activityService.register(newActvity).subscribe(newActivity => undefined);
+      }
+      else {
+        alert("Preencha os campos obrigatórios");
       }
     });
   }
