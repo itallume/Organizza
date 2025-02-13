@@ -13,7 +13,7 @@ export class UserService {
   private currentUser: User;
 
   constructor(private http: HttpClient) {
-    this.currentUser = new User('563c', 'itallo', 'itallo.g', '123456');
+      this.currentUser = new User('','','','');
   }
 
   getUsers(): Observable<User[]> {
@@ -41,4 +41,7 @@ export class UserService {
     return this.currentUser;
   }
 
+  isLoggedIn() {
+    return this.currentUser.id !== '';
+  }
 }

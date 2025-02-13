@@ -22,24 +22,25 @@ export class ActivityCardComponent implements OnInit {
   readonly panelOpenState = signal(false);
 
   public activities: Array<Activity> = [];
-  public user: User;
+  public user!: User ;
 
   constructor(
     public activityService: ActivityService,
     public userService: UserService,
-    private dialog: MatDialog // Injete o MatDialog
+    private dialog: MatDialog
   ) {
+
     this.user = this.userService.getCurrentUser();
-    console.log(this.user);
+
   }
 
   ngOnInit(): void {
-    console.log(this.user.id);
+
     this.activityService.updateActivities();
   }
 
   addActivity() {
-    console.log('Abrindo modal para adicionar atividade');
+
 
     // Abre o modal
     const dialogRef = this.dialog.open(ActivityRegisterComponent, {
@@ -51,7 +52,7 @@ export class ActivityCardComponent implements OnInit {
     // Quando o modal é fechado, você pode capturar os dados retornados
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Nova atividade criada:', result);
+
         // Aqui você pode adicionar a lógica para salvar a atividade
         this.activityService.register(new Activity(result.id,
           this.user.id,

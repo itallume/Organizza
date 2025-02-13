@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../shared/services/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-calendar-card',
@@ -6,6 +8,13 @@ import { Component } from '@angular/core';
   templateUrl: './calendar-card.component.html',
   styleUrl: './calendar-card.component.css'
 })
-export class CalendarCardComponent {
+export class CalendarCardComponent implements OnInit {
 
+  constructor(private userService: UserService, private router: Router) {}
+
+  ngOnInit(): void {
+    if (!this.userService.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
+  }
 }
