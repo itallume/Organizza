@@ -1,7 +1,10 @@
-.main-container {
+.dad{
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+.main-container {
   background-color: lightpink;
   padding: 4rem;
   border-radius: 1rem;
@@ -17,4 +20,3 @@ mat-form-field {
   width: 100%;
   margin-bottom: 16px;
 }
-

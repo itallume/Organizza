@@ -1,0 +1,18 @@
+
+.add-button{
+  margin-top: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.div-pai{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.delete-button{
+  margin-top: 20px;
+  display: grid;
+  place-items: end;
+}
+
