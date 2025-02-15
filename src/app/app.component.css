@@ -1,6 +1,9 @@
-.center-container {
-
+#main{
   height: 100vh;
   width: 100vw;
-
 }
+.center-container {
+  height: 100%;
+  width: 100%;
+}
+

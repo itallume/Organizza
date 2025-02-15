@@ -13,11 +13,14 @@ import {HttpClientModule} from '@angular/common/http';
 import { HeaderComponent } from './shared/components/header/header.component';
 import {MAT_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
 import {DateAdapter} from 'angular-calendar';
+import { FooterComponent } from './shared/components/footer/footer.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    FooterComponent,
 
   ],
   imports: [
