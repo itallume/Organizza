@@ -18,7 +18,8 @@
         </mat-error>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">Login</button>
-      <p class="mt-4">Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
+      <p *ngIf="errorMessage" class="text-danger mt-2">{{errorMessage}}</p>
+      <p >Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
     </form>
   </div>
 </div>

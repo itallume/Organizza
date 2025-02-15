@@ -1,6 +1,7 @@
 h1{
   color: var(--pink-500);
   font-family: "Comic Sans MS", cursive, sans-serif;
+  cursor: pointer;
 }
 div{
   background-color: var(--pink-100);
