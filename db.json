@@ -1,6 +1,5 @@
 {
   "users": [
-
     {
       "id": "550e",
       "name": "lauro",
@@ -19,7 +18,6 @@
       "email": "paulo@email",
       "password": "1234"
     }
-
   ],
   "activities": [
     {
@@ -189,6 +187,20 @@
       "pricePayed": 450,
       "done": true,
       "paied": true
+    },
+    {
+      "id": "b20c",
+      "userID": "563c",
+      "title": "ofinica do bolo",
+      "description": "comer bolo com os amigos",
+      "date": "2025-2-18",
+      "address": "Rua primeiro de maio",
+      "clientNumber": "123456789",
+      "clientName": "itallo",
+      "price": 30,
+      "pricePayed": 0,
+      "done": false,
+      "paied": false
     }
   ]
 }
