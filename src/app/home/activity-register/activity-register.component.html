@@ -20,6 +20,15 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
+    <mat-form-field appearance="fill">
+      <input matInput
+             placeholder="Hora (HH:MM)"
+             [(ngModel)]="activity.hour"
+             name="hour"
+             required
+             maxlength="5"
+             (input)="formatHour()" />
+    </mat-form-field>
 
     <mat-form-field appearance="fill">
       <input matInput placeholder="Endereço" [(ngModel)]="activity.address" name="address" required>
