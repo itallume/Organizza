@@ -14,6 +14,9 @@ export class Activity {
     public done: boolean = false,
     public paied: boolean = false,
     ) {
+    const hourSplit = hour.split(':').map(Number);
+    this._date.setHours(hourSplit[0]);
+    this._date.setMinutes(hourSplit[1]);
   }
 
 

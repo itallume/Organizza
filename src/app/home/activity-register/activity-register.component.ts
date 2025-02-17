@@ -33,10 +33,6 @@ export class ActivityRegisterComponent {
       this.activity.title.trim() !== '' &&
       this.activity.description.trim() !== ''
     ) {
-      const hour = this.activity.hour.split(':').map(Number);
-      this.activity.date = new Date(this.activity.date.getFullYear(),
-                                    this.activity.date.getMonth(), this.activity.date.getDate(),
-                                    hour[0], hour[1]);
       this.activity.userID = this.userService.getCurrentUser().id;
       this.activityService.register(this.activity).subscribe(newActivity => this.activityService.updateActivities());
     }

@@ -5,9 +5,13 @@
         <mat-expansion-panel-header>
           <mat-panel-title>{{activity.title}}</mat-panel-title>
           <mat-panel-description>
-            {{activity.date}}
+            {{activity.date.getDate().toString().padStart(2, '0') + '/' +
+          (activity.date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+          activity.date.getFullYear()}}
+            {{activity.hour}}
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <p><strong>Descrição: </strong>{{activity.description}}</p>
         <div class="div-pai">
           <div class="div1">
             <p><strong>ID atividade:</strong> {{activity.id}}</p>

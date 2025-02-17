@@ -37,13 +37,31 @@ export class ActivityService {
 
   updateActivities() {
     this.getActivityPerDay(this.userService.getCurrentUser().id).subscribe((activities) => {
-      this.activities = activities;
+      this.activities = activities.sort((a, b) => a.date.getTime() - b.date.getTime());
     });
   }
 
   getActivityPerDay(userID:string): Observable<Activity[]> {
     return this.http.get<Activity[]>(
-      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`);
+      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`).pipe(
+      map(activities => activities.map(activity =>
+        new Activity(
+          activity.id,
+          activity.userID,
+          activity.title,
+          activity.description,
+          new Date(activity.date), // É NECESSÁRIO, NÃO TIRAR
+          activity.hour,
+          activity.address,
+          activity.clientNumber,
+          activity.clientName,
+          activity.price,
+          activity.pricePayed,
+          activity.done,
+          activity.paied
+        )
+      ))
+    );
   }
 
   remove(id: string): Observable<any> {
