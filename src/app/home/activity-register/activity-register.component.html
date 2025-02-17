@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Criar Nova Atividade</h2>
 <mat-dialog-content>
-  <form (ngSubmit)="onSubmit()">
+  <form>
     <mat-form-field appearance="fill">
       <input matInput placeholder="Título*" [(ngModel)]="activity.title" name="title" required>
     </mat-form-field>
@@ -15,11 +15,21 @@
              [matDatepicker]="picker"
              [(ngModel)]="activity.date"
              name="date"
-             required>
+             required (keypress)="allowOnlyNumbers($event)">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
+    <mat-form-field appearance="fill">
+      <input matInput
+             placeholder="Hora (HH:MM)"
+             [(ngModel)]="activity.hour"
+             name="hour"
+             required
+             maxlength="5"
+             (input)="formatHour()"
+             (keypress)="allowOnlyNumbers($event)"/>
+    </mat-form-field>
 
     <mat-form-field appearance="fill">
       <input matInput placeholder="Endereço" [(ngModel)]="activity.address" name="address" required>
@@ -30,18 +40,20 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-
-      <input matInput placeholder="Número do Cliente" [(ngModel)]="activity.clientNumber" name="clientNumber" required>
+      <input matInput type="text" placeholder="Número do Cliente" [(ngModel)]="activity.clientNumber" name="clientNumber"
+             required (keypress)="allowOnlyNumbers($event)">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <p> Valor total</p>
-      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.price" name="price" required>
+      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.price" name="price" step="10" min="0"
+             required (keypress)="allowOnlyNumbers($event)">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <p> Valor pago</p>
-      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.pricePayed" name="price">
+      <input matInput type="number" placeholder="Preço" [(ngModel)]="activity.pricePayed" name="price"  step="10" min="0"
+             required (keypress)="allowOnlyNumbers($event)">
     </mat-form-field>
 
     <mat-checkbox [(ngModel)]="activity.done" name="done">Concluído</mat-checkbox>
@@ -49,7 +61,7 @@
 
     <mat-dialog-actions>
       <button mat-button type="button"  mat-dialog-close >Cancelar</button>
-      <button mat-button type="submit" color="primary">Criar</button>
+      <button mat-button type="submit" color="primary" (click)="onSubmit()">Criar</button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>

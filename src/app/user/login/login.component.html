@@ -14,11 +14,13 @@
         <input matInput  [type]="hidePw ? 'password' : 'text'" formControlName="password" required>
         <mat-icon matSuffix (click)="hidePw = !hidePw">{{hidePw ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-          É necessário informar uma senha.
+        É necessário informar uma senha.
         </mat-error>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">Login</button>
-      <p>Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
+      <p *ngIf="errorMessage" class="text-danger mt-2">{{errorMessage}}</p>
+      <p >Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
     </form>
   </div>
 </div>
+

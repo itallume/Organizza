@@ -52,13 +52,13 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
     MatCheckbox,
     MatDialogActions,
     MatDialogClose,
-    MatRadioModule, // Use the module
-    MatIconModule, // Use the module
-    MatButtonModule, // Use the module
-    MatFormFieldModule, // Use the module
-    MatInputModule, // Use the module
-    MatDialogModule, // Add this line!
-    MatCheckboxModule, // Use the module
+    MatRadioModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatCheckboxModule,
     MatNativeDateModule
 
   ],

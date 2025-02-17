@@ -14,29 +14,57 @@ export class ActivityService {
 
   constructor(private http: HttpClient, private userService: UserService) {
     this.selectedDate = new Date();
-
    }
 
   register(activity: Activity): Observable<Activity> {
-    return this.http.post<Activity>(this.URL_ACTIVITIES, activity);
+    const activityJson = {
+      "userID": this.userService.getCurrentUser().id,
+      "title": activity.title,
+      "description": activity.description,
+      "date": new Date(activity.date).toISOString().slice(0, 10),
+      "hour": activity.hour,
+      "address": activity.address,
+      "clientNumber": activity.clientNumber,
+      "clientName": activity.clientName,
+      "price": activity.price,
+      "pricePayed": activity.pricePayed,
+      "done": activity.done,
+      "paied": activity.paied,
+    }
+    return this.http.post<Activity>(this.URL_ACTIVITIES, activityJson);
 
   }
+
   updateActivities() {
     this.getActivityPerDay(this.userService.getCurrentUser().id).subscribe((activities) => {
-      this.activities = activities;
-      console.log(this.activities); // Aqui você pode ver se as atividades estão sendo atualizadas
+      this.activities = activities.sort((a, b) => a.date.getTime() - b.date.getTime());
     });
   }
 
   getActivityPerDay(userID:string): Observable<Activity[]> {
-    console.log(this.selectedDate);
-    console.log(userID)
-    console.log(this.selectedDate.getFullYear() + '-' + (this.selectedDate.getMonth() + 1) + '-' + this.selectedDate.getDate());
-    return this.http.get<Activity[]>(`${this.URL_ACTIVITIES}?userID=${userID}&date=${this.selectedDate.getFullYear() + '-' + (this.selectedDate.getMonth() + 1) + '-' + this.selectedDate.getDate()}`);
-
+    return this.http.get<Activity[]>(
+      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`).pipe(
+      map(activities => activities.map(activity =>
+        new Activity(
+          activity.id,
+          activity.userID,
+          activity.title,
+          activity.description,
+          new Date(activity.date), // É NECESSÁRIO, NÃO TIRAR
+          activity.hour,
+          activity.address,
+          activity.clientNumber,
+          activity.clientName,
+          activity.price,
+          activity.pricePayed,
+          activity.done,
+          activity.paied
+        )
+      ))
+    );
   }
 
-  remove(id: number): Observable<any> {
+  remove(id: string): Observable<any> {
     return this.http.delete(`${this.URL_ACTIVITIES}/${id}`);
   }
 

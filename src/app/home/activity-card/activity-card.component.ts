@@ -17,13 +17,12 @@ import {ActivityDeleteComponent} from '../activity-delete/activity-delete.compon
 @Component({
   selector: 'activity-card-component',
   templateUrl: 'activity-card.component.html',
+  styleUrls: ['activity-card.component.css'],
   standalone: false,
 })
 export class ActivityCardComponent implements OnInit {
   readonly panelOpenState = signal(false);
-
-  public activities: Array<Activity> = [];
-  public user!: User ;
+  public user: User ;
 
   constructor(
     public activityService: ActivityService,
@@ -39,44 +38,12 @@ export class ActivityCardComponent implements OnInit {
   }
 
   addActivity() {
-
-
-
-    const dialogRef = this.dialog.open(ActivityRegisterComponent, {
+    this.dialog.open(ActivityRegisterComponent, {
       width: '500px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (
-        result &&
-        result.title &&
-        result.description &&
-        result.date &&
-        result.title.trim() !== '' &&
-        result.description.trim() !== ''
-      ) {
-        const newActvity = new Activity(result.id,
-          this.user.id,
-          result.title,
-          result.description,
-          `${result.date.getFullYear() + '-' + (result.date.getMonth() + 1) + '-' + result.date.getDate()}`,
-          result.address,
-          result.clientNumber,
-          result.clientName,
-          result.price,
-          result.pricePayed,
-          result.done,
-          result.paied );
-
-        this.activityService.register(newActvity).subscribe(newActivity => undefined);
-      }
-      else {
-        alert("Preencha os campos obrigatórios");
-      }
     });
   }
 
-  deleteActivity(id: number) {
+  deleteActivity(id: string) {
     this.dialog.open(ActivityDeleteComponent, {
       width: '250px',
       enterAnimationDuration: '0.5s',

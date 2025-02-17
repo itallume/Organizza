@@ -21,3 +21,8 @@ mat-form-field {
   margin-bottom: 16px;
 }
 
+a{
+  text-decoration: none ;
+  color: var(--pink-a200);
+}
+
