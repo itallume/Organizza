@@ -1,4 +1,6 @@
-
+.card{
+  border: none !important;
+}
 .add-button{
   margin-top: 20px;
   display: grid;

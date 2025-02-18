@@ -8,7 +8,7 @@
 
 .card{
   margin-top: 35px;
-
+  border: none !important;
 }
 
 activity-card-component {
