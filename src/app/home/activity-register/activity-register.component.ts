@@ -14,14 +14,16 @@ class ActivityModalComponent {
   styleUrl: './activity-register.component.css'
 })
 export class ActivityRegisterComponent {
-  activity: Activity = new Activity('', '', '', '', new Date(), '', '','', '', 0);
+  activity: Activity;
 
   constructor(
     public dialogRef: MatDialogRef<ActivityModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public activityService: ActivityService,
     public userService: UserService
-  ) {}
+  ) {
+    this.activity = new Activity('', '', '', '', new Date(this.activityService.selectedDate), '', '','', '', 0);
+  }
 
   onSubmit(): void {
     if (

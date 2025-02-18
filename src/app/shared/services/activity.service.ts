@@ -50,7 +50,7 @@ export class ActivityService {
           activity.userID,
           activity.title,
           activity.description,
-          new Date(activity.date), // É NECESSÁRIO, NÃO TIRAR
+          new Date(activity.date),
           activity.hour,
           activity.address,
           activity.clientNumber,
