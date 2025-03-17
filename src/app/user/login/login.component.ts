@@ -30,25 +30,23 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  onSubmit(): void {
+  onSubmit(event?: Event): void {
+    if (event) event.preventDefault();
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value.trim().toLowerCase();
       const password = this.loginForm.get('password')?.value;
-  
       this.userService.getUsers().subscribe({
         next: (users) => {
-          console.log('Dados recebidos:', users); 
-  
           const foundUser = users.find((user: any) => 
             user.email.toLowerCase() === email && 
             user.password === password
           );
           console.log(foundUser)
-          if (foundUser != null) {
-            this.router.navigate(['/home']);
+          if (foundUser) {
+            this.userService.setCurrentUser(foundUser);
+            this.router.navigate(['home']);
           } else {
             this.errorMessage = 'Credenciais incorretas';
-            this.router.navigate(['/home']);
           }
         },
         error: (error) => {

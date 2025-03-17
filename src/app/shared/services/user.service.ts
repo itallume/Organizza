@@ -33,6 +33,10 @@ export class UserService {
     return this.currentUser;
   }
 
+  setCurrentUser(user: User): void{
+    this.currentUser  = user;
+  }
+
   isLoggedIn() {
     return this.currentUser.id !== '';
   }
