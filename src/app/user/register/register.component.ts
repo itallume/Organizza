@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit{
   onSubmit(): void {
     if(this.registerForm.valid) {
       const user: User = this.registerForm.value;
-      this.userService.register(user)
+      this.userService.createUser(user)
         .subscribe({
           next: (res) => {
             console.log('User registrado com sucesso');

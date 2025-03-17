@@ -24,16 +24,8 @@ export class UserService {
     return this.http.get<User>(`${this.URL_USERS}/${id}`);
   }
 
-  login(email: string, password: string): Observable<User> {
-    return this.http.get<User[]>(`${this.URL_USERS}?email=${email}&password=${password}`)
-      .pipe(
-        map(users => users[0]),
-        tap(user => this.currentUser = user)
-      );
-  }
 
-
-  register(user: User): Observable<User> {
+  createUser(user: User): Observable<User> {
     return this.http.post<User>(this.URL_USERS, user);
   }
 

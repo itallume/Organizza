@@ -32,21 +32,30 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const email = this.loginForm.get('email')?.value;
+      const email = this.loginForm.get('email')?.value.trim().toLowerCase();
       const password = this.loginForm.get('password')?.value;
-      this.userService.login(email, password)
-        .subscribe({
-          next: (res: User | null) => {
-            if (res && res.id) {
-              this.router.navigate(['home']);
-            } else {
-              this.errorMessage = 'Usuário não encontrado ou credenciais inválidas.';
-            }
-          },
-          error: (err) => {
-            this.errorMessage = 'Erro ao fazer login:' + err;
+  
+      this.userService.getUsers().subscribe({
+        next: (users) => {
+          console.log('Dados recebidos:', users); 
+  
+          const foundUser = users.find((user: any) => 
+            user.email.toLowerCase() === email && 
+            user.password === password
+          );
+          console.log(foundUser)
+          if (foundUser != null) {
+            this.router.navigate(['/home']);
+          } else {
+            this.errorMessage = 'Credenciais incorretas';
+            this.router.navigate(['/home']);
           }
-        });
+        },
+        error: (error) => {
+          console.error('Erro:', error);
+          this.errorMessage = 'Erro ao conectar ao servidor';
+        }
+      });
     }
   }
 }
