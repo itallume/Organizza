@@ -10,6 +10,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatIcon} from "@angular/material/icon";
 import {UserServiceIF} from '../shared/services/user-serviceIF';
 import {UserService} from '../shared/services/user.service';
+import {UserFirestoreService} from '../shared/services/user-firestore.service';
+import {FirestoreModule} from '../firestore/firestore.module';
 
 
 
@@ -18,6 +20,13 @@ import {UserService} from '../shared/services/user.service';
     LoginComponent,
     RegisterComponent
   ],
+  providers: [
+    {
+      provide : UserServiceIF,
+      useClass: UserFirestoreService
+    }
+  ],
+
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -26,6 +35,7 @@ import {UserService} from '../shared/services/user.service';
         RouterLink,
         ReactiveFormsModule,
         MatIcon,
+        FirestoreModule
 
     ]
 })
