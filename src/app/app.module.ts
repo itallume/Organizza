@@ -14,6 +14,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import {MAT_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
 import {DateAdapter} from 'angular-calendar';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import {FirestoreModule} from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     HomeModule,
     UserModule,
     HttpClientModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FirestoreModule
   ],
   providers: [
     provideAnimationsAsync(),

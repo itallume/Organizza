@@ -3,6 +3,7 @@ import {UserService} from '../../shared/services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {User} from '../../shared/model/user';
+import {UserServiceIF} from '../../shared/services/user-serviceIF';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit{
   hidePw = true;
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
+    private userService: UserServiceIF, //troquei o service
     private router: Router
   ) {}
 

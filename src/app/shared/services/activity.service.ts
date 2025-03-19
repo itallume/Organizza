@@ -36,7 +36,7 @@ export class ActivityService {
   }
 
   updateActivities() {
-    this.getActivityPerDay(this.userService.getCurrentUser().id).subscribe((activities) => {
+    this.getActivityPerDay(this.userService.getCurrentUser().id!).subscribe((activities) => {
       this.activities = activities.sort((a, b) => a.date.getTime() - b.date.getTime());
     });
   }

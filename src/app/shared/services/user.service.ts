@@ -13,7 +13,7 @@ export class UserService {
   private currentUser: User;
 
   constructor(private http: HttpClient) {
-      this.currentUser = new User('','','','');
+      this.currentUser = new User('','','');
   }
 
   getUsers(): Observable<User[]> {
@@ -23,7 +23,6 @@ export class UserService {
   getUserById(id: string):Observable<User> {
     return this.http.get<User>(`${this.URL_USERS}/${id}`);
   }
-
 
   createUser(user: User): Observable<User> {
     return this.http.post<User>(this.URL_USERS, user);

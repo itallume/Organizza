@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
 import {Router} from '@angular/router';
+import {UserServiceIF} from '../../shared/services/user-serviceIF';
 
 @Component({
   selector: 'app-calendar-card',
@@ -10,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class CalendarCardComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserServiceIF, private router: Router) {}
 
   ngOnInit(): void {
     if (!this.userService.isLoggedIn()) {

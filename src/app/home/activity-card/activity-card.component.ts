@@ -8,6 +8,7 @@ import {User} from '../../shared/model/user';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivityRegisterComponent} from '../activity-register/activity-register.component';
 import {ActivityDeleteComponent} from '../activity-delete/activity-delete.component';
+import {UserServiceIF} from '../../shared/services/user-serviceIF';
 
 
 
@@ -26,7 +27,7 @@ export class ActivityCardComponent implements OnInit {
 
   constructor(
     public activityService: ActivityService,
-    public userService: UserService,
+    public userService: UserServiceIF,
     private dialog: MatDialog
   ) {
     this.user = this.userService.getCurrentUser();

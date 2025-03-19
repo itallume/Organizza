@@ -8,6 +8,8 @@ import {MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatIcon} from "@angular/material/icon";
+import {UserServiceIF} from '../shared/services/user-serviceIF';
+import {UserService} from '../shared/services/user.service';
 
 
 
@@ -23,7 +25,8 @@ import {MatIcon} from "@angular/material/icon";
         MatButton,
         RouterLink,
         ReactiveFormsModule,
-        MatIcon
+        MatIcon,
+
     ]
 })
 export class UserModule { }

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../shared/services/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../shared/model/user';
+import {UserServiceIF} from '../../shared/services/user-serviceIF';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
+    private userService: UserServiceIF,
     private router: Router
   ) {
   }
@@ -37,8 +38,8 @@ export class LoginComponent implements OnInit {
       const password = this.loginForm.get('password')?.value;
       this.userService.getUsers().subscribe({
         next: (users) => {
-          const foundUser = users.find((user: any) => 
-            user.email.toLowerCase() === email && 
+          const foundUser = users.find((user: any) =>
+            user.email.toLowerCase() === email &&
             user.password === password
           );
           console.log(foundUser)
