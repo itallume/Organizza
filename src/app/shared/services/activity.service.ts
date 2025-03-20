@@ -17,24 +17,7 @@ export class ActivityService {
     this.selectedDate = new Date();
   }
 
-  register(activity: Activity): Observable<Activity> {
-    const activityJson = {
-      "userID": this.userService.getCurrentUser().id,
-      "title": activity.title,
-      "description": activity.description,
-      "date": new Date(activity.date).toISOString().slice(0, 10),
-      "hour": activity.hour,
-      "address": activity.address,
-      "clientNumber": activity.clientNumber,
-      "clientName": activity.clientName,
-      "price": activity.price,
-      "pricePayed": activity.pricePayed,
-      "done": activity.done,
-      "paied": activity.paied,
-    }
-    return this.http.post<Activity>(this.URL_ACTIVITIES, activityJson);
 
-  }
 
   updateActivities() {
     this.getActivityPerDay(this.userService.getCurrentUser().id!).subscribe((activities) => {
@@ -42,22 +25,52 @@ export class ActivityService {
     });
   }
 
+  // Método auxiliar para formatação de data (padrão único)
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+// Método auxiliar para criar Date local
+  private parseDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // Cria data sem fuso horário
+  }
+
+  register(activity: Activity): Observable<Activity> {
+    const activityJson = {
+      "userID": this.userService.getCurrentUser().id,
+      "title": activity.title,
+      "description": activity.description,
+      "date": this.formatDate(activity.date), // Formatação padronizada
+      "hour": activity.hour || '00:00', // Hora default
+      "address": activity.address,
+      "clientNumber": activity.clientNumber,
+      "clientName": activity.clientName,
+      "price": activity.price,
+      "pricePayed": activity.pricePayed,
+      "done": activity.done,
+      "paied": activity.paied,
+    };
+    return this.http.post<Activity>(this.URL_ACTIVITIES, activityJson);
+  }
+
   getActivityPerDay(userID: string): Observable<Activity[]> {
+    const formattedDate = this.formatDate(new Date(this.selectedDate));
+
     return this.http.get<any[]>(
-      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toLocaleDateString('en-CA')}`
+      `${this.URL_ACTIVITIES}?userID=${userID}&date=${formattedDate}`
     ).pipe(
       map(activities => activities.map(activity => {
-        // Dividir a string da data e criar Date localmente
-        const dateParts = activity.date.split('-').map((part: string) => parseInt(part, 10));
-        const activityDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-
         return new Activity(
           activity.id,
           activity.userID,
           activity.title,
           activity.description,
-          activityDate,
-          activity.hour,
+          this.parseDate(activity.date), // Parse padronizado
+          activity.hour || '00:00', // Hora default
           activity.address,
           activity.clientNumber,
           activity.clientName,
@@ -71,18 +84,13 @@ export class ActivityService {
   }
 
   update(activity: Activity): Observable<any> {
-    const year = activity.date.getFullYear();
-    const month = (activity.date.getMonth() + 1).toString().padStart(2, '0');
-    const day = activity.date.getDate().toString().padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
     const activityJson = {
       "id": activity.id,
       "userID": this.userService.getCurrentUser().id,
       "title": activity.title,
       "description": activity.description,
-      "date": formattedDate,
-      "hour": activity.hour,
+      "date": this.formatDate(activity.date), // Formatação padronizada
+      "hour": activity.hour || '00:00', // Hora default
       "address": activity.address,
       "clientNumber": activity.clientNumber,
       "clientName": activity.clientName,
@@ -90,7 +98,7 @@ export class ActivityService {
       "pricePayed": activity.pricePayed,
       "done": activity.done,
       "paied": activity.paied,
-    }
+    };
     return this.http.put(`${this.URL_ACTIVITIES}`, activityJson);
   }
 
