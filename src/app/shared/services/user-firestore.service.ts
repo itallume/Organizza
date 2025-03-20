@@ -46,7 +46,7 @@ export class UserFirestoreService implements UserServiceIF {
   }
 
   isLoggedIn() {
-    return this.currentUser.id !== '';
+    return this.currentUser.id !== undefined;
   }
 
   login(email: string, password: string): Observable<User | null> {

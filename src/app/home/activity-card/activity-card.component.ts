@@ -61,10 +61,10 @@ export class ActivityCardComponent implements OnInit {
       activity.done,
       activity.paied
     );
-    
+
     this.dialog.open(ActivityRegisterComponent, {
       width: '500px',
-      data: { editMode: true, activity: activityCopy, activityId: id }
+      data: { editMode: true, activity: activityCopy}
     }).afterClosed().subscribe(result => {
       if (result) {
         this.activityService.updateActivities();

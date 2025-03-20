@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class ActivityService {
   public selectedDate:Date;
-  private URL_ACTIVITIES = environment.URL_ACTIVITIES_JSON_SERVER;
+  private URL_ACTIVITIES = environment.URL_ACTIVITIES_SPRING;
   public activities: Activity[] = [];
 
   constructor(private http: HttpClient, private userService:UserServiceIF) {
@@ -18,15 +18,11 @@ export class ActivityService {
   }
 
   register(activity: Activity): Observable<Activity> {
-    const date = new Date(activity.date);
-    // Formatação garantindo dia/mês/ano local e evitando problemas de fuso horário
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    
     const activityJson = {
       "userID": this.userService.getCurrentUser().id,
       "title": activity.title,
       "description": activity.description,
-      "date": formattedDate,
+      "date": new Date(activity.date).toISOString().slice(0, 10),
       "hour": activity.hour,
       "address": activity.address,
       "clientNumber": activity.clientNumber,
@@ -46,27 +42,21 @@ export class ActivityService {
     });
   }
 
-  getActivityPerDay(userID:string): Observable<Activity[]> {
-    const date = new Date(this.selectedDate);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    
-    return this.http.get<Activity[]>(
-      `${this.URL_ACTIVITIES}?userID=${userID}&date=${formattedDate}`).pipe(
+  getActivityPerDay(userID: string): Observable<Activity[]> {
+    return this.http.get<any[]>(
+      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toLocaleDateString('en-CA')}`
+    ).pipe(
       map(activities => activities.map(activity => {
-        // Cria a data preservando o dia correto
-        // Assumindo que activity.date é uma string no formato YYYY-MM-DD
-        const dateStr = activity.date.toString(); // Converte para string se ainda não for
-        const year = parseInt(dateStr.substring(0, 4));
-        const month = parseInt(dateStr.substring(5, 7)) - 1;
-        const day = parseInt(dateStr.substring(8, 10));
-        const correctDate = new Date(year, month, day);
-        
+        // Dividir a string da data e criar Date localmente
+        const dateParts = activity.date.split('-').map((part: string) => parseInt(part, 10));
+        const activityDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
         return new Activity(
           activity.id,
           activity.userID,
           activity.title,
           activity.description,
-          correctDate,
+          activityDate,
           activity.hour,
           activity.address,
           activity.clientNumber,
@@ -80,11 +70,14 @@ export class ActivityService {
     );
   }
 
-  update(id: string, activity: Activity): Observable<any> {
-    const date = new Date(activity.date);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    
+  update(activity: Activity): Observable<any> {
+    const year = activity.date.getFullYear();
+    const month = (activity.date.getMonth() + 1).toString().padStart(2, '0');
+    const day = activity.date.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
     const activityJson = {
+      "id": activity.id,
       "userID": this.userService.getCurrentUser().id,
       "title": activity.title,
       "description": activity.description,
@@ -98,7 +91,7 @@ export class ActivityService {
       "done": activity.done,
       "paied": activity.paied,
     }
-    return this.http.put(`${this.URL_ACTIVITIES}/${id}`,activityJson);
+    return this.http.put(`${this.URL_ACTIVITIES}`, activityJson);
   }
 
   remove(id: string): Observable<any> {
@@ -106,17 +99,14 @@ export class ActivityService {
   }
 
   getReportPerMonth(): Observable<Blob | string> {
-    const date = new Date(this.selectedDate);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    
     return this.http.get(
-      `${this.URL_ACTIVITIES}/report?userID=${this.userService.getCurrentUser().id}&date=${formattedDate}`, {
+      `${this.URL_ACTIVITIES}/report?userID=${this.userService.getCurrentUser().id}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`, {
         responseType: 'blob',
         observe: 'response'
       }).pipe(
       map(response => {
         if (response.body instanceof Blob) {
-          return response.body;
+          return response.body; // Retorna o Blob (PDF)
         } else {
           throw new Error('Nenhuma ocorrência encontrada para o mês selecionado.');
         }

@@ -13,7 +13,6 @@ import { UserServiceIF } from '../../shared/services/user-serviceIF';
 export class ActivityRegisterComponent implements OnInit {
   activity: Activity;
   editMode: boolean = false;
-  activityId: string = '';
 
   constructor(
     private activityService: ActivityService,
@@ -27,7 +26,6 @@ export class ActivityRegisterComponent implements OnInit {
   ngOnInit(): void {
     if (this.data && this.data.editMode) {
       this.editMode = true;
-      this.activityId = this.data.activityId;
       if (this.data.activity) {
         this.activity = this.data.activity;
       }
@@ -51,7 +49,7 @@ export class ActivityRegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.editMode) {
-      this.activityService.update(this.activityId, this.activity).subscribe(
+      this.activityService.update(this.activity).subscribe(
         () => {
           this.dialogRef.close(true);
         },
