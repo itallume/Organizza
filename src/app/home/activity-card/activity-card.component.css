@@ -9,9 +9,10 @@
   grid-template-columns: 1fr 1fr;
 }
 
-
-.delete-button{
+.buttons-container {
   margin-top: 20px;
-  display: grid;
-  place-items: end;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; 
 }
+

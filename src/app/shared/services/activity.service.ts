@@ -2,29 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {catchError, from, map, Observable, of, switchMap, tap, throwError} from 'rxjs';
 import {Activity} from '../model/activity';
-import {UserService} from './user.service';
-import {UserFirestoreService} from './user-firestore.service';
 import {UserServiceIF} from './user-serviceIF';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
   public selectedDate:Date;
-  private URL_ACTIVITIES = 'http://localhost:8080/activities';
+  private URL_ACTIVITIES = environment.URL_ACTIVITIES_JSON_SERVER;
   public activities: Activity[] = [];
 
   constructor(private http: HttpClient, private userService:UserServiceIF) {
     this.selectedDate = new Date();
-   }
+  }
 
   register(activity: Activity): Observable<Activity> {
-    console.log(this.userService.getCurrentUser().id)
+    const date = new Date(activity.date);
+    // Formatação garantindo dia/mês/ano local e evitando problemas de fuso horário
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    
     const activityJson = {
       "userID": this.userService.getCurrentUser().id,
       "title": activity.title,
       "description": activity.description,
-      "date": new Date(activity.date).toISOString().slice(0, 10),
+      "date": formattedDate,
       "hour": activity.hour,
       "address": activity.address,
       "clientNumber": activity.clientNumber,
@@ -45,15 +47,26 @@ export class ActivityService {
   }
 
   getActivityPerDay(userID:string): Observable<Activity[]> {
+    const date = new Date(this.selectedDate);
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    
     return this.http.get<Activity[]>(
-      `${this.URL_ACTIVITIES}?userID=${userID}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`).pipe(
-      map(activities => activities.map(activity =>
-        new Activity(
+      `${this.URL_ACTIVITIES}?userID=${userID}&date=${formattedDate}`).pipe(
+      map(activities => activities.map(activity => {
+        // Cria a data preservando o dia correto
+        // Assumindo que activity.date é uma string no formato YYYY-MM-DD
+        const dateStr = activity.date.toString(); // Converte para string se ainda não for
+        const year = parseInt(dateStr.substring(0, 4));
+        const month = parseInt(dateStr.substring(5, 7)) - 1;
+        const day = parseInt(dateStr.substring(8, 10));
+        const correctDate = new Date(year, month, day);
+        
+        return new Activity(
           activity.id,
           activity.userID,
           activity.title,
           activity.description,
-          new Date(activity.date),
+          correctDate,
           activity.hour,
           activity.address,
           activity.clientNumber,
@@ -62,9 +75,30 @@ export class ActivityService {
           activity.pricePayed,
           activity.done,
           activity.paied
-        )
-      ))
+        );
+      }))
     );
+  }
+
+  update(id: string, activity: Activity): Observable<any> {
+    const date = new Date(activity.date);
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    
+    const activityJson = {
+      "userID": this.userService.getCurrentUser().id,
+      "title": activity.title,
+      "description": activity.description,
+      "date": formattedDate,
+      "hour": activity.hour,
+      "address": activity.address,
+      "clientNumber": activity.clientNumber,
+      "clientName": activity.clientName,
+      "price": activity.price,
+      "pricePayed": activity.pricePayed,
+      "done": activity.done,
+      "paied": activity.paied,
+    }
+    return this.http.put(`${this.URL_ACTIVITIES}/${id}`,activityJson);
   }
 
   remove(id: string): Observable<any> {
@@ -72,14 +106,17 @@ export class ActivityService {
   }
 
   getReportPerMonth(): Observable<Blob | string> {
+    const date = new Date(this.selectedDate);
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    
     return this.http.get(
-      `${this.URL_ACTIVITIES}/report?userID=${this.userService.getCurrentUser().id}&date=${new Date(this.selectedDate).toISOString().slice(0, 10)}`, {
+      `${this.URL_ACTIVITIES}/report?userID=${this.userService.getCurrentUser().id}&date=${formattedDate}`, {
         responseType: 'blob',
         observe: 'response'
       }).pipe(
       map(response => {
         if (response.body instanceof Blob) {
-          return response.body; // Retorna o Blob (PDF)
+          return response.body;
         } else {
           throw new Error('Nenhuma ocorrência encontrada para o mês selecionado.');
         }
@@ -94,7 +131,6 @@ export class ActivityService {
     );
   }
 
-// Adicione um novo método para download direto
   downloadReportPerMonth(): Observable<void> {
     return this.getReportPerMonth().pipe(
       tap(response => {

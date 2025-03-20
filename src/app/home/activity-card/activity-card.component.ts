@@ -44,6 +44,34 @@ export class ActivityCardComponent implements OnInit {
     });
   }
 
+  editActivity(id: string, activity: Activity){
+    // Criar uma cópia da atividade para evitar referências
+    const activityCopy = new Activity(
+      activity.id,
+      activity.userID,
+      activity.title,
+      activity.description,
+      new Date(activity.date),
+      activity.hour,
+      activity.address,
+      activity.clientNumber,
+      activity.clientName,
+      activity.price,
+      activity.pricePayed,
+      activity.done,
+      activity.paied
+    );
+    
+    this.dialog.open(ActivityRegisterComponent, {
+      width: '500px',
+      data: { editMode: true, activity: activityCopy, activityId: id }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.activityService.updateActivities();
+      }
+    });
+  }
+
   deleteActivity(id: string) {
     this.dialog.open(ActivityDeleteComponent, {
       width: '250px',

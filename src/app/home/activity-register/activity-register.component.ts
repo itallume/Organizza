@@ -1,64 +1,74 @@
-import {Component, Inject} from '@angular/core';
-import {Activity} from '../../shared/model/activity';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ActivityService} from '../../shared/services/activity.service';
-import {UserService} from '../../shared/services/user.service';
-import {UserServiceIF} from '../../shared/services/user-serviceIF';
-
-class ActivityModalComponent {
-}
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Activity } from '../../shared/model/activity';
+import { ActivityService } from '../../shared/services/activity.service';
+import { UserServiceIF } from '../../shared/services/user-serviceIF';
 
 @Component({
   selector: 'app-activity-register',
-  standalone: false,
   templateUrl: './activity-register.component.html',
-  styleUrl: './activity-register.component.css'
+  styleUrls: ['./activity-register.component.css'],
+  standalone: false
 })
-export class ActivityRegisterComponent {
+export class ActivityRegisterComponent implements OnInit {
   activity: Activity;
+  editMode: boolean = false;
+  activityId: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<ActivityModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public activityService: ActivityService,
+    private activityService: ActivityService,
+    public dialogRef: MatDialogRef<ActivityRegisterComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { editMode: boolean, activity: Activity, activityId: string },
     public userService: UserServiceIF
   ) {
-    this.activity = new Activity('', '', '', '', new Date(this.activityService.selectedDate), '', '','', '', 0);
+    this.activity = new Activity('', '', '', '', new Date(), '', '', '', '', 0, 0, false, false);
+  }
+
+  ngOnInit(): void {
+    if (this.data && this.data.editMode) {
+      this.editMode = true;
+      this.activityId = this.data.activityId;
+      if (this.data.activity) {
+        this.activity = this.data.activity;
+      }
+    }
+  }
+
+  allowOnlyNumbers(event: KeyboardEvent): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode === 46 || (charCode >= 48 && charCode <= 57) || charCode === 58) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
+  }
+
+  formatHour(): void {
+    if (this.activity.hour.length === 2) {
+      this.activity.hour += ':';
+    }
   }
 
   onSubmit(): void {
-    if (
-      this.activity &&
-      this.activity.title &&
-      this.activity.description &&
-      this.activity.date &&
-      this.activity.hour &&
-      this.activity.title.trim() !== '' &&
-      this.activity.description.trim() !== ''
-    ) {
-      this.activity.userID = this.userService.getCurrentUser().id!;
-      this.activityService.register(this.activity).subscribe(newActivity => this.activityService.updateActivities());
-    }
-    else {
-      alert("Preencha os campos obrigatórios");
-      return;
-    }
-    this.dialogRef.close();
-  }
-
-  formatHour() {
-    let cleaned = this.activity.hour.replace(/\D/g, '');
-
-    if (cleaned.length > 2) {
-      cleaned = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4);
-    }
-    this.activity.hour = cleaned.slice(0, 5);
-  }
-  allowOnlyNumbers(event: KeyboardEvent) {
-    const charCode = event.keyCode ? event.keyCode : event.which;
-    if (charCode < 48 || charCode > 57) {
-      event.preventDefault();
+    if (this.editMode) {
+      this.activityService.update(this.activityId, this.activity).subscribe(
+        () => {
+          this.dialogRef.close(true);
+        },
+        error => {
+          console.error('Erro ao atualizar atividade', error);
+        }
+      );
+    } else {
+      this.activityService.register(this.activity).subscribe(
+        () => {
+          this.activityService.updateActivities();
+          this.dialogRef.close(true);
+        },
+        error => {
+          console.error('Erro ao registrar atividade', error);
+        }
+      );
     }
   }
-
 }

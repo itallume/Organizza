@@ -16,7 +16,7 @@ import {DateAdapter} from 'angular-calendar';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import {FirestoreModule} from '@angular/fire/firestore';
 import {AngularFirestoreModule} from '@angular/fire/compat/firestore';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,6 +27,7 @@ import {AngularFirestoreModule} from '@angular/fire/compat/firestore';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     MatCardModule,
     MatDatepickerModule,

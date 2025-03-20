@@ -27,9 +27,11 @@
           </div>
         </div>
 
-
-        <div class="delete-button">
-          <button mat-fab (click)="deleteActivity(activity.id)" >
+        <div class="buttons-container">
+          <button mat-fab (click)="editActivity(activity.id,activity)" class="action-button">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-fab (click)="deleteActivity(activity.id)" class="action-button">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

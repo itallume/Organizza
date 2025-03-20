@@ -16,7 +16,4 @@ export abstract class UserServiceIF {
 
   abstract login(email:string, password:string): Observable<User | null>;
 
-  // abstract getUserById(id: string): Observable<User>;
-
-  // abstract deleteUser(id: string): Observable<void>;
 }
