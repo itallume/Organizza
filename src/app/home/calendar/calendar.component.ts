@@ -20,4 +20,15 @@ export class CalendarComponent {
   onDateChange() {
     this.activityService.updateActivities();
   }
+
+  downloadReport(){
+    this.activityService.downloadReportPerMonth().subscribe({
+      next: () => {
+      },
+      error: (err) => {
+        console.error('Erro inesperado:', err);
+        alert('Ocorreu um erro inesperado ao processar a solicitação.');
+      }
+    });
+  }
 }

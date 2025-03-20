@@ -3,3 +3,7 @@
 </mat-card>
 
 <p>Data Selecionada: {{ activityService.selectedDate | date }}</p>
+
+<button mat-fab aria-label="report" (click)="downloadReport()">
+  <mat-icon>receipt_long</mat-icon>
+</button>

@@ -49,6 +49,26 @@ export class UserFirestoreService implements UserServiceIF {
     return this.currentUser.id !== '';
   }
 
+  login(email: string, password: string): Observable<User | null> {
+    return from(
+      this.userCollection.ref
+        .where('email', '==', email)
+        .where('password', '==', password)
+        .get()
+    ).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          const user = { id: doc.id, ...doc.data() } as User;
+          this.setCurrentUser(user);
+          return user;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
   // getUserById(newId: string): Observable<User> {
   //   return runInInjectionContext(this.injetor, () => {
   //     return this.userCollection.doc(newId).get().pipe(map(document =>

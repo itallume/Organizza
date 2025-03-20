@@ -4,6 +4,7 @@ import {UserService} from '../../shared/services/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../shared/model/user';
 import {UserServiceIF} from '../../shared/services/user-serviceIF';
+import {user} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -36,25 +37,32 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value.trim().toLowerCase();
       const password = this.loginForm.get('password')?.value;
-      this.userService.getUsers().subscribe({
-        next: (users) => {
-          const foundUser = users.find((user: any) =>
-            user.email.toLowerCase() === email &&
-            user.password === password
-          );
-          console.log(foundUser)
-          if (foundUser) {
-            this.userService.setCurrentUser(foundUser);
-            this.router.navigate(['home']);
-          } else {
-            this.errorMessage = 'Credenciais incorretas';
-          }
-        },
-        error: (error) => {
-          console.error('Erro:', error);
-          this.errorMessage = 'Erro ao conectar ao servidor';
+      this.userService.login(email, password).subscribe( user => {
+        if (user) {
+          this.router.navigate(['home']);
+        }else {
+          this.errorMessage = 'Email ou senha inválidos';
         }
-      });
-    }
+      })
+
+    //   this.userService.getUsers().subscribe({
+    //     next: (users) => {
+    //       const foundUser = users.find((user: any) =>
+    //         user.email.toLowerCase() === email &&
+    //         user.password === password
+    //       );
+    //       if (foundUser) {
+    //         this.userService.setCurrentUser(foundUser);
+    //         this.router.navigate(['home']);
+    //       } else {
+    //         this.errorMessage = 'Credenciais incorretas';
+    //       }
+    //     },
+    //     error: (error) => {
+    //       console.error('Erro:', error);
+    //       this.errorMessage = 'Erro ao conectar ao servidor';
+    //     }
+    //   });
+    // }
   }
-}
+}}
