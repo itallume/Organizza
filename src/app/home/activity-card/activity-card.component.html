@@ -1,41 +1,41 @@
 <div class="container">
-    @for (activity of activityService.activities; track activity.id){
+  @for (activity of activityService.activities; track activity.id){
   <mat-accordion class="card">
-      <mat-expansion-panel (opened)="panelOpenState.set(true)"  (closed)="panelOpenState.set(false)" class="card1">
-        <mat-expansion-panel-header>
-          <mat-panel-title>{{activity.title}}</mat-panel-title>
-          <mat-panel-description>
-            {{activity.date.getDate().toString().padStart(2, '0') + '/' +
-          (activity.date.getMonth() + 1).toString().padStart(2, '0') + '/' +
-          activity.date.getFullYear()}}
-            {{activity.hour}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <p><strong>Descrição: </strong>{{activity.description}}</p>
-        <div class="div-pai">
-          <div class="div1">
-            <p><strong>ID atividade:</strong> {{activity.id}}</p>
-            <p><strong>Nome do Cliente:</strong> {{activity.clientName}}</p>
-            <p><Strong>Telefone: </Strong> {{activity.clientNumber}}</p>
-            <p><Strong>Endereço: </Strong> {{activity.address}}</p>
-          </div>
-          <div class="div2">
-            <p><Strong>Valor: </Strong> R${{activity.price}}</p>
-            <p><Strong>Valor pago: </Strong> R${{activity.pricePayed}}</p>
-            <p><Strong>Finalizado: </Strong> {{activity.done ? 'sim' : 'não'}}</p>
-            <p><Strong>Pago:</Strong> {{activity.paied ? 'sim' : 'não'}}</p>
-          </div>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" class="card1">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{activity.title}}</mat-panel-title>
+        <mat-panel-description>
+          {{ activity.date | date:'dd/MM/yyyy' }} {{activity.hour}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p><strong>Descrição: </strong>{{activity.description}}</p>
+      <div class="div-pai">
+        <div class="div1">
+          <p><strong>ID atividade:</strong> {{activity.id}}</p>
+          <p><strong>Nome do Cliente:</strong> {{activity.clientName}}</p>
+          <p><Strong>Telefone: </Strong> {{activity.clientNumber}}</p>
+          <p><Strong>Endereço: </Strong> {{activity.address}}</p>
         </div>
+        <div class="div2">
+          <p><Strong>Valor: </Strong> R${{activity.price}}</p>
+          <p><Strong>Valor pago: </Strong> R${{activity.pricePayed}}</p>
+          <p><Strong>Finalizado: </Strong> {{activity.done ? 'sim' : 'não'}}</p>
+          <p><Strong>Pago:</Strong> {{activity.paied ? 'sim' : 'não'}}</p>
+        </div>
+      </div>
 
 
-        <div class="delete-button">
-          <button mat-fab (click)="deleteActivity(activity.id)" >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </mat-expansion-panel>
+      <div class="delete-button">
+        <button mat-fab color="primary" (click)="editActivity(activity)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-fab color="warn" (click)="deleteActivity(activity.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-expansion-panel>
   </mat-accordion>
-    }
+  }
 
   <div class="add-button">
     <button mat-fab (click)="addActivity()">
@@ -43,8 +43,3 @@
     </button>
   </div>
 </div>
-
-
-
-
-

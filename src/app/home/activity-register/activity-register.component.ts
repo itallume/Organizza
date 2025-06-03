@@ -1,8 +1,8 @@
-import {Component, Inject} from '@angular/core';
-import {Activity} from '../../shared/model/activity';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ActivityService} from '../../shared/services/activity.service';
-import {UserService} from '../../shared/services/user.service';
+import { Component, Inject } from '@angular/core';
+import { Activity } from '../../shared/model/activity';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ActivityService } from '../../shared/services/activity.service';
+import { UserService } from '../../shared/services/user.service';
 
 class ActivityModalComponent {
 }
@@ -22,7 +22,14 @@ export class ActivityRegisterComponent {
     public activityService: ActivityService,
     public userService: UserService
   ) {
-    this.activity = new Activity('', '', '', '', new Date(this.activityService.selectedDate), '', '','', '', 0);
+    if (data && data.activity) {
+      this.activity = { ...data.activity };
+      if (typeof this.activity.date === 'string') {
+        this.activity.date = new Date(this.activity.date);
+      }
+    } else {
+      this.activity = new Activity('', '', '', '', new Date(this.activityService.selectedDate), '', '', '', '', 0);
+    }
   }
 
   onSubmit(): void {
@@ -36,13 +43,33 @@ export class ActivityRegisterComponent {
       this.activity.description.trim() !== ''
     ) {
       this.activity.userID = this.userService.getCurrentUser().id;
-      this.activityService.register(this.activity).subscribe(newActivity => this.activityService.updateActivities());
-    }
-    else {
+
+      // Sempre formata a data para 'YYYY-MM-DD' antes de enviar
+      if (this.activity.date instanceof Date) {
+        // Corrige para garantir que só a data (sem hora) seja enviada
+        const year = this.activity.date.getFullYear();
+        const month = (this.activity.date.getMonth() + 1).toString().padStart(2, '0');
+        const day = this.activity.date.getDate().toString().padStart(2, '0');
+        this.activity.date = `${year}-${month}-${day}`;
+      }
+
+      if (this.data && this.data.activity) {
+        // Edição
+        this.activityService.atualizar(this.activity).subscribe(() => {
+          this.activityService.updateActivities();
+          this.dialogRef.close(true);
+        });
+      } else {
+        // Criação
+        this.activityService.register(this.activity).subscribe(() => {
+          this.activityService.updateActivities();
+          this.dialogRef.close(true);
+        });
+      }
+    } else {
       alert("Preencha os campos obrigatórios");
       return;
     }
-    this.dialogRef.close();
   }
 
   formatHour() {

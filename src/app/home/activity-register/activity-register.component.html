@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Criar Nova Atividade</h2>
+<h2 mat-dialog-title>{{ data && data.activity ? 'Editar Atividade' : 'Criar Nova Atividade' }}</h2>
 <mat-dialog-content>
   <form>
     <mat-form-field appearance="fill">
@@ -61,7 +61,7 @@
 
     <mat-dialog-actions>
       <button mat-button type="button"  mat-dialog-close >Cancelar</button>
-      <button mat-button type="submit" color="primary" (click)="onSubmit()">Criar</button>
+      <button mat-button type="submit" color="primary" (click)="onSubmit()">{{ data && data.activity ? 'Editar' : 'Criar' }}</button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>

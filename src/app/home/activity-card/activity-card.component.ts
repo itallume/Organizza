@@ -1,13 +1,13 @@
-import {ChangeDetectionStrategy, Component, Input, signal, OnInit} from '@angular/core';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { ChangeDetectionStrategy, Component, Input, signal, OnInit } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ActivityService } from '../../shared/services/activity.service';
-import {Activity} from '../../shared/model/activity';
-import {Observable} from 'rxjs';
-import {UserService} from '../../shared/services/user.service';
-import {User} from '../../shared/model/user';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivityRegisterComponent} from '../activity-register/activity-register.component';
-import {ActivityDeleteComponent} from '../activity-delete/activity-delete.component';
+import { Activity } from '../../shared/model/activity';
+import { Observable } from 'rxjs';
+import { UserService } from '../../shared/services/user.service';
+import { User } from '../../shared/model/user';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivityRegisterComponent } from '../activity-register/activity-register.component';
+import { ActivityDeleteComponent } from '../activity-delete/activity-delete.component';
 
 
 
@@ -22,7 +22,7 @@ import {ActivityDeleteComponent} from '../activity-delete/activity-delete.compon
 })
 export class ActivityCardComponent implements OnInit {
   readonly panelOpenState = signal(false);
-  public user: User ;
+  public user: User;
 
   constructor(
     public activityService: ActivityService,
@@ -53,7 +53,19 @@ export class ActivityCardComponent implements OnInit {
         this.activityService.remove(id).subscribe(res => this.activityService.updateActivities());
       }
     });
+  }
 
+  editActivity(activity: Activity) {
+    const dialogRef = this.dialog.open(ActivityRegisterComponent, {
+      width: '500px',
+      data: { activity }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.activityService.updateActivities();
+      }
+    });
   }
 
 }

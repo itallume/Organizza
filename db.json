@@ -23,6 +23,12 @@
       "name": "JPaulin",
       "email": "paulin.g",
       "password": "123456"
+    },
+    {
+      "id": "dfc9",
+      "name": "bruno",
+      "email": "bruno@gmail.com",
+      "password": "123"
     }
   ],
   "activities": [
@@ -235,6 +241,40 @@
       "pricePayed": 0,
       "done": false,
       "paied": false
+    },
+    {
+      "id": "c4be",
+      "_userID": "dfc9",
+      "title": "cc",
+      "description": "cc",
+      "_date": "2025-06-02T22:30:00.000Z",
+      "hour": "19:30",
+      "address": "ccc",
+      "clientNumber": "4321",
+      "clientName": "ccc",
+      "price": 123,
+      "pricePayed": 12,
+      "done": false,
+      "paied": true,
+      "date": "2025-06-03T03:00:00.000Z",
+      "userID": "dfc9"
+    },
+    {
+      "id": "80d0",
+      "_userID": "dfc9",
+      "title": "aaa",
+      "description": "aaa",
+      "_date": "2025-06-02T22:30:00.000Z",
+      "hour": "19:30",
+      "address": "aaa",
+      "clientNumber": "123",
+      "clientName": "aaa",
+      "price": 123,
+      "pricePayed": 32,
+      "done": false,
+      "paied": false,
+      "date": "2025-06-04T03:00:00.000Z",
+      "userID": "dfc9"
     }
   ]
 }
