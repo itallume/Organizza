@@ -4,6 +4,7 @@ import {LoginComponent} from './user/login/login.component';
 import {RegisterComponent} from './user/register/register.component';
 import {CalendarComponent} from './home/calendar/calendar.component';
 import {CalendarCardComponent} from './home/calendar-card/calendar-card.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes =
   [
@@ -14,7 +15,8 @@ const routes: Routes =
       component: RegisterComponent
     },
     { path : 'home',
-      component: CalendarCardComponent
+      component: CalendarCardComponent,
+      canActivate: [AuthGuard]
     }
   ];
 

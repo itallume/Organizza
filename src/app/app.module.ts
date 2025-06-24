@@ -9,11 +9,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HomeModule } from './home/home.module';
 import {UserModule} from './user/user.module';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { HeaderComponent } from './shared/components/header/header.component';
 import {MAT_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
 import {DateAdapter} from 'angular-calendar';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { HttpErrorInterceptor } from './shared/interceptors/http-error.interceptor';
 
 
 @NgModule({
@@ -35,6 +36,11 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   ],
   providers: [
     provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    },
     {
       provide: MAT_DATE_FORMATS,
       useValue: {

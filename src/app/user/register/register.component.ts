@@ -13,6 +13,9 @@ import {User} from '../../shared/model/user';
 export class RegisterComponent implements OnInit{
   registerForm!: FormGroup;
   hidePw = true;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -29,15 +32,22 @@ export class RegisterComponent implements OnInit{
 
   onSubmit(): void {
     if(this.registerForm.valid) {
-      const user: User = this.registerForm.value;
-      this.userService.register(user)
+      const name = this.registerForm.get('name')?.value;
+      const email = this.registerForm.get('email')?.value;
+      const password = this.registerForm.get('password')?.value;
+      
+      this.userService.register(name, email, password)
         .subscribe({
           next: (res) => {
-            console.log('User registrado com sucesso');
-            this.router.navigate(['']);
+            this.successMessage = 'Usuário registrado com sucesso!';
+            this.errorMessage = null;
+            setTimeout(() => {
+              this.router.navigate(['']);
+            }, 2000);
           },
           error: (err) => {
-            console.error('Erro ao registrar usuário:', err);
+            this.errorMessage = err;
+            this.successMessage = null;
           }
         });
     }

@@ -1,3 +1,10 @@
-<div class="header d-flex justify-content-center p-3">
-  <h1 (click)="goToHome()">Agenda PJ</h1>
+<div class="header d-flex justify-content-between align-items-center p-3">
+  <h1 (click)="goToHome()" style="cursor: pointer; margin: 0;">Agenda PJ</h1>
+  
+  <div *ngIf="isLoggedIn()" class="user-info d-flex align-items-center">
+    <span class="me-3">Olá, {{ getCurrentUserName() }}!</span>
+    <button type="button" class="btn btn-outline-light btn-sm" (click)="logout()">
+      Sair
+    </button>
+  </div>
 </div>

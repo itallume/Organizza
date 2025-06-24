@@ -54,16 +54,43 @@ export class ActivityRegisterComponent {
       }
 
       if (this.data && this.data.activity) {
-        // Edição
-        this.activityService.atualizar(this.activity).subscribe(() => {
-          this.activityService.updateActivities();
-          this.dialogRef.close(true);
+        // Edição - usando método alternativo POST
+        this.userService.debugLocalStorage(); // Debug do localStorage
+        
+        this.activityService.atualizarComPost(this.activity).subscribe({
+          next: (response) => {
+            this.activityService.updateActivities();
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar atividade:', error);
+            let errorMessage = 'Erro desconhecido';
+            
+            if (error.status === 400) {
+              errorMessage = 'Dados inválidos ou usuário não encontrado';
+            } else if (error.status === 404) {
+              errorMessage = 'Atividade não encontrada';
+            } else if (error.error) {
+              errorMessage = error.error;
+            } else if (error.message) {
+              errorMessage = error.message;
+            }
+            
+            console.error('Erro ao atualizar atividade:', errorMessage);
+            alert('Erro ao atualizar atividade: ' + errorMessage);
+          }
         });
       } else {
         // Criação
-        this.activityService.register(this.activity).subscribe(() => {
-          this.activityService.updateActivities();
-          this.dialogRef.close(true);
+        this.activityService.register(this.activity).subscribe({
+          next: () => {
+            this.activityService.updateActivities();
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Erro ao criar atividade:', error);
+            alert('Erro ao criar atividade: ' + error);
+          }
         });
       }
     } else {

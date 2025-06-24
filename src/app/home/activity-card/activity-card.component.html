@@ -5,13 +5,12 @@
       <mat-expansion-panel-header>
         <mat-panel-title>{{activity.title}}</mat-panel-title>
         <mat-panel-description>
-          {{ activity.date | date:'dd/MM/yyyy' }} {{activity.hour}}
+          {{activity.hour}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p><strong>Descrição: </strong>{{activity.description}}</p>
       <div class="div-pai">
         <div class="div1">
-          <p><strong>ID atividade:</strong> {{activity.id}}</p>
           <p><strong>Nome do Cliente:</strong> {{activity.clientName}}</p>
           <p><Strong>Telefone: </Strong> {{activity.clientNumber}}</p>
           <p><Strong>Endereço: </Strong> {{activity.address}}</p>
