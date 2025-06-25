@@ -221,6 +221,40 @@
   border-top-color: white !important;
 }
 
+/* Forçar seta branca em todos os estados */
+::ng-deep .mat-expansion-panel .mat-expansion-panel-header .mat-expansion-indicator {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-expansion-panel-header .mat-expansion-indicator svg {
+  fill: white !important;
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-expansion-panel-header .mat-expansion-indicator .mat-icon {
+  color: white !important;
+}
+
+/* Se for um ícone SVG */
+::ng-deep .mat-expansion-panel-header .mat-expansion-indicator svg path {
+  fill: white !important;
+}
+
+/* Para Material Design mais recente */
+::ng-deep .mat-expansion-panel-header .mdc-icon-button {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel-header .material-icons {
+  color: white !important;
+}
+
+/* Garantir que o ícone de expansão seja sempre branco */
+::ng-deep .mat-expansion-panel-header-indicator * {
+  color: white !important;
+  fill: white !important;
+}
+
 /* Botões dentro do card */
 ::ng-deep .mat-expansion-panel .mat-mdc-fab {
   margin: 5px !important;
