@@ -1,25 +1,85 @@
-.main-container{
+.main-container {
   display: grid;
   margin-left: 10%;
   grid-template-columns: 0.4fr 1.6fr;
   width: 80%;
   height: 100%;
+  background-color: #1a1a1a; /* Preto mais escuro */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.card{
+.card {
   margin-top: 35px;
   border: none !important;
+  background-color: #2d2d2d !important; /* Cinza escuro para contraste */
+  color: white !important;
+  border-radius: 12px;
+  border: 1px solid #333 !important;
 }
 
 activity-card-component {
   margin: 0px 10px 0px 10px;
 }
 
-.calendar{
+.calendar {
   margin-top: 50px;
   display: flex;
   justify-content: center;
+  background-color: #2d2d2d; /* Cinza escuro para contraste */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333;
+}
 
+/* Container geral da página */
+::ng-deep .mat-mdc-card.main-container {
+  background-color: #2d2d2d !important;
+  color: white !important;
+}
+
+/* Estilização adicional para o calendário */
+::ng-deep .mat-calendar {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-header {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-table {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body-cell {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #1a3c7d !important;
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body-today {
+  border-color: #64b5f6 !important;
+  color: #64b5f6 !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover {
+  background-color: #4a4a4a !important;
+  color: white !important;
 }
 
 

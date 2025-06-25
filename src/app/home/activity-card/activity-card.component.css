@@ -1,19 +1,237 @@
-.add-button{
+.add-button {
   margin-top: 20px;
   display: grid;
   place-items: center;
 }
 
-.div-pai{
+.div-pai {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: #1a1a1a; /* Preto mais escuro para o container */
+  padding: 20px;
+  gap: 20px;
+  border-radius: 12px;
+  min-height: 400px;
 }
 
-
-.delete-button{
+.delete-button {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 12px; /* Espaçamento entre os itens */
+}
+
+/* Estilização dos cards de atividade - azulados */
+::ng-deep .mat-mdc-card {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6b 100%) !important; /* Gradiente azulado */
+  color: white !important;
+  border: 1px solid #64b5f6;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.2) !important; /* Sombra azulada */
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .mat-mdc-card:hover {
+  box-shadow: 0 8px 25px rgba(100, 181, 246, 0.4) !important;
+  transform: translateY(-3px) scale(1.02) !important; /* Expansão ao hover */
+  border-color: #90caf9 !important;
+  background: linear-gradient(135deg, #2d4a6b 0%, #3d5a7b 100%) !important; /* Gradiente mais claro no hover */
+}
+
+::ng-deep .mat-mdc-card-title {
+  color: white !important; /* Título branco */
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 1.2em !important;
+}
+
+::ng-deep .mat-mdc-card-content {
+  color: white !important; /* Conteúdo branco */
+}
+
+::ng-deep .mat-mdc-card-content p {
+  color: white !important; /* Parágrafos brancos */
+  margin: 8px 0 !important;
+}
+
+::ng-deep .mat-mdc-card-content span {
+  color: white !important; /* Spans brancos */
+}
+
+::ng-deep .mat-mdc-card-content div {
+  color: white !important; /* Divs brancos */
+}
+
+::ng-deep .mat-mdc-card-subtitle {
+  color: #e3f2fd !important; /* Subtítulo azul claro */
+}
+
+/* Garantir que todos os elementos de texto sejam brancos */
+::ng-deep .mat-mdc-card * {
+  color: white !important;
+}
+
+/* Exceções para elementos que devem manter cor específica */
+::ng-deep .mat-mdc-card .mat-mdc-button {
+  color: #64b5f6 !important; /* Botões mantêm cor azul */
+}
+
+::ng-deep .mat-mdc-card .mat-mdc-icon-button {
+  color: #90caf9 !important; /* Ícones mantêm cor azul */
+}
+
+/* Botões nos cards */
+::ng-deep .mat-mdc-button {
+  color: #64b5f6 !important;
+  border: 1px solid #64b5f6 !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-button:hover {
+  background-color: rgba(100, 181, 246, 0.1) !important;
+  border-color: #90caf9 !important;
+}
+
+::ng-deep .mat-mdc-icon-button {
+  color: #90caf9 !important;
+}
+
+::ng-deep .mat-mdc-icon-button:hover {
+  background-color: rgba(100, 181, 246, 0.1) !important;
+}
+
+/* Botão de adicionar */
+::ng-deep .mat-mdc-fab {
+  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4) !important;
+}
+
+::ng-deep .mat-mdc-fab:hover {
+  background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%) !important;
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Estilização específica para Accordion/Expansion Panel */
+::ng-deep .mat-expansion-panel {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6b 100%) !important;
+  color: white !important;
+  border: 1px solid #64b5f6 !important;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.2) !important;
+  border-radius: 12px !important;
+  margin: 10px 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .mat-expansion-panel:hover {
+  box-shadow: 0 8px 25px rgba(100, 181, 246, 0.4) !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  border-color: #90caf9 !important;
+  background: linear-gradient(135deg, #2d4a6b 0%, #3d5a7b 100%) !important;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  background: transparent !important;
+  color: white !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+::ng-deep .mat-expansion-panel-header:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+::ng-deep .mat-expansion-panel-header-title {
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 1.1em !important;
+}
+
+::ng-deep .mat-expansion-panel-header-description {
+  color: #e3f2fd !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  background: transparent !important;
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel-content {
+  color: white !important;
+}
+
+/* Garantir que todos os textos dentro do expansion panel sejam brancos */
+::ng-deep .mat-expansion-panel p {
+  color: white !important;
+  margin: 8px 0 !important;
+}
+
+::ng-deep .mat-expansion-panel strong {
+  color: #90caf9 !important; /* Labels em azul claro */
+  font-weight: bold !important;
+}
+
+::ng-deep .mat-expansion-panel .div-pai {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel .div-pai p {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel .div-pai strong {
+  color: #90caf9 !important;
+}
+
+/* Container do accordion */
+::ng-deep .mat-accordion {
+  background: transparent !important;
+}
+
+::ng-deep .mat-accordion .mat-expansion-panel {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6b 100%) !important;
+}
+
+/* Ícone de expansão */
+::ng-deep .mat-expansion-panel-header-indicator {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel-header-indicator:after {
+  color: white !important;
+  border-color: white !important;
+}
+
+::ng-deep .mat-expansion-indicator {
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-indicator::after {
+  color: white !important;
+  border-top-color: white !important;
+}
+
+/* Seta de expansão - forçar cor branca */
+::ng-deep .mat-expansion-panel-header .mat-expansion-indicator::after {
+  border-top-color: white !important;
+}
+
+::ng-deep .mat-expansion-panel-header[aria-expanded="true"] .mat-expansion-indicator::after {
+  border-top-color: white !important;
+}
+
+/* Botões dentro do card */
+::ng-deep .mat-expansion-panel .mat-mdc-fab {
+  margin: 5px !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-mdc-fab.mat-primary {
+  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%) !important;
+  color: white !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-mdc-fab.mat-warn {
+  background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%) !important;
+  color: white !important;
 }

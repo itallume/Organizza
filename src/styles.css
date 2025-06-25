@@ -1,27 +1,303 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f5f5f5;}
-app-root{
-    display: grid;
-    grid-template-columns: 0.4fr 1.6fr;
+html, body { 
+  height: 100%; 
+  background-color: #2d2d2d; /* Background escuro global */
+  color: white; /* Texto branco global */
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  background-color: #2d2d2d;
+  color: white;
+}
+
+app-root {
+  display: grid;
+  grid-template-columns: 0.4fr 1.6fr;
+  background-color: #2d2d2d;
+  color: white;
+}
+
+/* Tema escuro global para Angular Material */
+::ng-deep .mat-mdc-card {
+  background-color: #3a3a3a !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-dialog-container {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+
+::ng-deep .mdc-dialog__surface {
+  background-color: #1a1a1a !important;
+  color: white !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+  background-color: transparent !important;
+}
+
+::ng-deep .cdk-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .mat-mdc-dialog-content {
+  color: white !important;
+  background-color: #1a1a1a !important;
+}
+
+::ng-deep .mat-mdc-dialog-title {
+  color: white !important;
+  background-color: #1a1a1a !important;
+}
+
+::ng-deep .mat-mdc-dialog-actions {
+  background-color: #1a1a1a !important;
+}
+
+/* Forçar background preto em todos os elementos de dialog */
+::ng-deep .mat-mdc-dialog-container *:not(.mat-mdc-button):not(.mat-icon) {
+  background-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__container {
+  background-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__scrim {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Estilização global dos campos de input */
+::ng-deep .mat-mdc-form-field {
+  --mdc-filled-text-field-container-color: #2d2d2d;
+  --mdc-filled-text-field-label-text-color: #ffffff;
+  --mdc-filled-text-field-input-text-color: #ffffff;
+  --mdc-filled-text-field-focus-label-text-color: #64b5f6;
+  --mdc-filled-text-field-active-indicator-color: #64b5f6;
+  --mdc-filled-text-field-focus-active-indicator-color: #64b5f6;
+  --mdc-filled-text-field-hover-label-text-color: #64b5f6;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #2d2d2d !important;
+  border-radius: 8px;
+}
+
+::ng-deep .mat-mdc-form-field-input-control {
+  color: white !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #2d2d2d !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
+  background-color: #2d2d2d !important;
+}
+
+::ng-deep .mdc-text-field--filled.mdc-text-field--focused {
+  background-color: #2d2d2d !important;
+}
+
+::ng-deep .mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+::ng-deep .mdc-line-ripple::before {
+  border-bottom-color: #64b5f6 !important;
+}
+
+::ng-deep .mdc-line-ripple::after {
+  border-bottom-color: #64b5f6 !important;
+}
+
+::ng-deep .mat-mdc-form-field-ripple {
+  color: #64b5f6 !important;
+}
+
+::ng-deep .mdc-floating-label {
+  color: #ffffff !important;
+}
+
+::ng-deep .mdc-floating-label--float-above {
+  color: #64b5f6 !important;
+}
+
+/* Calendário com tema escuro */
+::ng-deep .mat-mdc-datepicker-panel {
+  background-color: #3a3a3a !important;
+  color: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+::ng-deep .mat-calendar {
+  background-color: #3a3a3a !important;
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-header {
+  background-color: #2d2d2d !important;
+  color: white !important;
+  border-radius: 8px 8px 0 0;
+}
+
+::ng-deep .mat-calendar-table {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-table-header th {
+  color: #cccccc !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-calendar-body-cell {
+  color: white !important;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .mat-calendar-body-cell:hover {
+  background-color: #4a4a4a !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #1a3c7d !important;
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-body-today {
+  border: 2px solid #64b5f6 !important;
+  color: #64b5f6 !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  color: #64b5f6 !important;
+}
+
+::ng-deep .mat-calendar-arrow {
+  color: white !important;
+}
+
+::ng-deep .mat-calendar-period-button {
+  color: white !important;
+  font-weight: bold;
+}
+
+::ng-deep .mat-calendar-previous-button,
+::ng-deep .mat-calendar-next-button {
+  color: white !important;
+  background-color: transparent !important;
+  border-radius: 50%;
+}
+
+::ng-deep .mat-calendar-previous-button:hover,
+::ng-deep .mat-calendar-next-button:hover {
+  background-color: #4a4a4a !important;
+}
+
+/* Melhorias para Select/Dropdown */
+::ng-deep .mat-mdc-select-panel {
+  background-color: #3a3a3a !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-option {
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-option:hover {
+  background-color: #4a4a4a !important;
+}
+
+::ng-deep .mat-mdc-option.mat-mdc-option-selected {
+  background-color: #1a3c7d !important;
+  color: white !important;
+}
+
+/* Melhorias para Datepicker Toggle */
+::ng-deep .mat-datepicker-toggle {
+  color: #64b5f6 !important;
+}
+
+::ng-deep .mat-datepicker-toggle:hover {
+  background-color: #4a4a4a !important;
+  border-radius: 50%;
+}
+
+/* Melhorias para Snackbar */
+::ng-deep .mat-mdc-snack-bar-container {
+  background-color: #3a3a3a !important;
+  color: white !important;
+}
+
+/* Melhorias para Tooltip */
+::ng-deep .mat-mdc-tooltip {
+  background-color: #2d2d2d !important;
+  color: white !important;
+}
+
+/* Melhorias para Menu */
+::ng-deep .mat-mdc-menu-panel {
+  background-color: #3a3a3a !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-menu-item {
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-menu-item:hover {
+  background-color: #4a4a4a !important;
+}
+
+/* Botões globais */
+::ng-deep .mat-mdc-raised-button {
+  background-color: #1a3c7d !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-raised-button:hover {
+  background-color: #2d5aa0 !important;
+}
+
+::ng-deep .mat-mdc-outlined-button {
+  border-color: #666 !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-outlined-button:hover {
+  background-color: #4a4a4a !important;
 }
 :root {
   /* Tons principais */
-  --pink-50: #fce4ec;
-  --pink-100: #f8bbd0;
-  --pink-200: #f48fb1;
-  --pink-300: #f06292;
-  --pink-400: #ec407a;
-  --pink-500: #e91e63; /* Cor padrão */
-  --pink-600: #d81b60;
-  --pink-700: #c2185b;
-  --pink-800: #ad1457;
-  --pink-900: #880e4f;
+  --blue-50:  #e9eff9;
+  --blue-100: #cddcf3;
+  --blue-200: #aabfe5;
+  --blue-300: #7f9cd0;
+  --blue-400: #4c74b2; /* Cor padrão */
+  --blue-500: #1a3c7d;
+  --blue-600: #0f2b58;
+  --blue-700: #06296b;
+  --blue-800: #05183c;
+  --blue-900: #0c0d0d;
 
   /* Tons de acentuação */
-  --pink-a100: #ff80ab;
-  --pink-a200: #ff4081;
-  --pink-a400: #f50057;
-  --pink-a700: #c51162;
+  --blue-a100: #6f8fd9;
+  --blue-a200: #466ac2;
+  --blue-a400: #2c539f;
+  --blue-a700: #101217;
 }
+
 

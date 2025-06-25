@@ -3,8 +3,37 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
+  background-color: #2d2d2d;
+  color: white;
 }
+
 .center-container {
   padding-bottom: 60px;
   flex: 1;
+  background-color: #2d2d2d;
+  color: white;
+}
+
+/* Garantir que todos os componentes herdem o tema escuro */
+* {
+  color: inherit;
+}
+
+/* Scrollbar personalizada para tema escuro */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2d2d2d;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
 }
