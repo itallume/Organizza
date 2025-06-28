@@ -9,7 +9,7 @@ import {UserService} from './user.service';
 })
 export class ActivityService {
   public selectedDate:Date;
-  private URL_ACTIVITIES = 'http://localhost:8080/activities';
+  private URL_ACTIVITIES = 'https://agendapj-backend.onrender.com/activities';
   public activities: Activity[] = [];
 
   constructor(private http: HttpClient, private userService: UserService) {
