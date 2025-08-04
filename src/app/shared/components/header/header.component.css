@@ -4,9 +4,12 @@ h1 {
   cursor: pointer;
 }
 
-div {
+.header {
   background-color: #3a3a3a; /* Cinza escuro para o header */
   border-bottom: 1px solid #555;
+  position: relative;
+  z-index: 1000; /* Z-index alto para ficar acima de outros elementos */
+  width: 100%;
 }
 
 /* Estilização para botões e textos no header */

@@ -5,6 +5,7 @@
   flex-direction: column;
   background-color: #2d2d2d;
   color: white;
+  position: relative; /* Para garantir contexto de stacking */
 }
 
 .center-container {
@@ -12,6 +13,26 @@
   flex: 1;
   background-color: #2d2d2d;
   color: white;
+}
+
+/* Container específico para páginas de autenticação */
+.center-container.auth-container {
+  padding: 0; /* Remove padding nas páginas de auth */
+  height: 100vh; /* Altura total da viewport */
+  width: 100vw; /* Largura total da viewport */
+  position: fixed; /* Posição fixa para cobrir toda a tela */
+  top: 0;
+  left: 0;
+  z-index: 998; /* Z-index menor que o header mas maior que conteúdo normal */
+  overflow: hidden; /* Previne scroll */
+}
+
+/* Garantir que o header seja sempre visível quando não for auth page */
+app-header {
+  position: relative;
+  z-index: 1001; /* Z-index maior que as páginas de auth */
+  width: 100%;
+  display: block;
 }
 
 /* Garantir que todos os componentes herdem o tema escuro */

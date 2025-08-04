@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     })
   }
 
@@ -51,5 +51,13 @@ export class LoginComponent implements OnInit {
           }
         });
     }
+  }
+
+  // Método para alternar visibilidade da senha com suporte a teclado
+  togglePasswordVisibility(event?: KeyboardEvent): void {
+    if (event && event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+    this.hidePw = !this.hidePw;
   }
 }

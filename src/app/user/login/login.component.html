@@ -1,25 +1,69 @@
 <div class="dad">
   <div class="main-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
+    <h1 class="login-title">Fazer Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" aria-label="Formulário de login">
+      <mat-form-field appearance="fill" class="accessible-field">
         <mat-label>Email</mat-label>
-        <input matInput id="email" formControlName="email">
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+        <input 
+          matInput 
+          id="email" 
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          aria-describedby="email-error"
+          aria-required="true">
+        <mat-error id="email-error" *ngIf="loginForm.get('email')?.hasError('required')">
           É necessário informar o email.
+        </mat-error>
+        <mat-error id="email-error" *ngIf="loginForm.get('email')?.hasError('email') && !loginForm.get('email')?.hasError('required')">
+          Formato de email inválido.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="accessible-field">
         <mat-label>Senha</mat-label>
-        <input matInput  [type]="hidePw ? 'password' : 'text'" formControlName="password" required>
-        <mat-icon matSuffix (click)="hidePw = !hidePw">{{hidePw ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-        É necessário informar uma senha.
+        <input 
+          matInput  
+          [type]="hidePw ? 'password' : 'text'" 
+          formControlName="password" 
+          required
+          autocomplete="current-password"
+          aria-describedby="password-error"
+          aria-required="true">
+        <mat-icon 
+          matSuffix 
+          (click)="togglePasswordVisibility()"
+          (keydown)="togglePasswordVisibility($event)"
+          [attr.aria-label]="hidePw ? 'Mostrar senha' : 'Ocultar senha'"
+          tabindex="0"
+          role="button">
+          {{hidePw ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+        <mat-error id="password-error" *ngIf="loginForm.get('password')?.hasError('required')">
+          É necessário informar uma senha.
+        </mat-error>
+        <mat-error id="password-error" *ngIf="loginForm.get('password')?.hasError('minlength') && !loginForm.get('password')?.hasError('required')">
+          A senha deve ter pelo menos 6 caracteres.
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Login</button>
-      <p *ngIf="errorMessage" class="text-danger mt-2">{{errorMessage}}</p>
-      <p >Não possui uma conta? <a routerLink="/register">Cadastre-se</a></p>
+      
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        class="login-button"
+        [disabled]="loginForm.invalid">
+        Entrar
+      </button>
+      
+      <div *ngIf="errorMessage" class="error-message" role="alert" aria-live="assertive">
+        {{errorMessage}}
+      </div>
+      
+      <p class="register-link">
+        Não possui uma conta? 
+        <a routerLink="/register" aria-label="Ir para página de cadastro">Cadastre-se</a>
+      </p>
     </form>
   </div>
 </div>

@@ -23,18 +23,25 @@ export class RegisterComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-        this.registerForm = this.fb.group({
-          name:['', Validators.required],
-          email:['', Validators.required],
-          password:['', Validators.required]
-        })
-    }
+    this.registerForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/)
+      ]]
+    })
+  }
 
   onSubmit(): void {
     if(this.registerForm.valid) {
       const name = this.registerForm.get('name')?.value;
       const email = this.registerForm.get('email')?.value;
       const password = this.registerForm.get('password')?.value;
+      
+      this.errorMessage = null; // Limpa erros anteriores
+      this.successMessage = null; // Limpa mensagens de sucesso anteriores
       
       this.userService.register(name, email, password)
         .subscribe({
@@ -46,11 +53,19 @@ export class RegisterComponent implements OnInit{
             }, 2000);
           },
           error: (err) => {
-            this.errorMessage = err;
+            this.errorMessage = 'Erro ao registrar usuário: ' + err;
             this.successMessage = null;
           }
         });
     }
+  }
+
+  // Método para alternar visibilidade da senha com suporte a teclado
+  togglePasswordVisibility(event?: KeyboardEvent): void {
+    if (event && event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+    this.hidePw = !this.hidePw;
   }
 
 }

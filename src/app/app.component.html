@@ -1,8 +1,8 @@
 <div class="d-flex flex-column" id="main">
-  <app-header></app-header>
-  <div class="center-container">
+  <app-header *ngIf="!isAuthPage"></app-header>
+  <div class="center-container" [class.auth-container]="isAuthPage">
     <router-outlet></router-outlet>
   </div>
-  <app-footer></app-footer>
+  <app-footer *ngIf="!isAuthPage"></app-footer>
 </div>
 
