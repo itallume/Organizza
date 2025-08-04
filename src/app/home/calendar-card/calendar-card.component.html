@@ -1,10 +1,176 @@
-<div class="main-container">
-
-  <div class="calendar">
-    <calendar ></calendar>
+<div class="dashboard-container">
+  <!-- Header da Dashboard -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="dashboard-title">
+        <mat-icon class="title-icon">dashboard</mat-icon>
+        Dashboard Principal
+      </h1>
+      <p class="dashboard-subtitle">Gerencie suas atividades de forma organizada</p>
+    </div>
   </div>
-  <div class="card">
-    <activity-card-component></activity-card-component>
+
+  <!-- Cards de Navegação Principal -->
+  <div class="navigation-section">
+    <h2 class="section-title">
+      <mat-icon>apps</mat-icon>
+      Navegação Rápida
+    </h2>
+    
+    <div class="navigation-cards">
+      <div class="nav-card" (click)="navigateToActivities()">
+        <div class="nav-card-icon activities-icon">
+          <mat-icon>event_note</mat-icon>
+        </div>
+        <div class="nav-card-content">
+          <h3 class="nav-card-title">Minhas Atividades</h3>
+          <p class="nav-card-description">Visualize e gerencie todas as suas atividades agendadas</p>
+          <div class="nav-card-stats">
+            <span class="stats-number">{{totalPending}}</span>
+            <span class="stats-label">pendentes</span>
+          </div>
+        </div>
+        <div class="nav-card-action">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+      </div>
+
+      <div class="nav-card" (click)="navigateToCalendar()">
+        <div class="nav-card-icon calendar-icon">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <div class="nav-card-content">
+          <h3 class="nav-card-title">Calendário</h3>
+          <p class="nav-card-description">Visualize suas atividades em formato de calendário</p>
+          <div class="nav-card-stats">
+            <span class="stats-number">{{totalToday}}</span>
+            <span class="stats-label">hoje</span>
+          </div>
+        </div>
+        <div class="nav-card-action">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+      </div>
+
+      <div class="nav-card" (click)="navigateToNewActivity()">
+        <div class="nav-card-icon add-icon">
+          <mat-icon>add_circle</mat-icon>
+        </div>
+        <div class="nav-card-content">
+          <h3 class="nav-card-title">Nova Atividade</h3>
+          <p class="nav-card-description">Cadastre uma nova atividade no seu cronograma</p>
+          <div class="nav-card-stats">
+            <span class="stats-number">+</span>
+            <span class="stats-label">criar</span>
+          </div>
+        </div>
+        <div class="nav-card-action">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+      </div>
+
+      <div class="nav-card" (click)="navigateToReports()">
+        <div class="nav-card-icon reports-icon">
+          <mat-icon>assessment</mat-icon>
+        </div>
+        <div class="nav-card-content">
+          <h3 class="nav-card-title">Relatórios</h3>
+          <p class="nav-card-description">Acompanhe suas estatísticas e produtividade</p>
+          <div class="nav-card-stats">
+            <span class="stats-number">{{totalCompleted}}</span>
+            <span class="stats-label">completas</span>
+          </div>
+        </div>
+        <div class="nav-card-action">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Resumo Rápido -->
+  <div class="summary-section">
+    <h2 class="section-title">
+      <mat-icon>insights</mat-icon>
+      Resumo Rápido
+    </h2>
+    
+    <div class="quick-summary">
+      <div class="summary-card">
+        <div class="summary-icon pending">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h4>Pendentes</h4>
+          <span class="summary-number">{{totalPending}}</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-icon completed">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h4>Concluídas</h4>
+          <span class="summary-number">{{totalCompleted}}</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-icon revenue">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h4>Receita</h4>
+          <span class="summary-number">R$ {{totalRevenue}}</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-icon today">
+          <mat-icon>today</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h4>Hoje</h4>
+          <span class="summary-number">{{totalToday}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Próximas Atividades -->
+  <div class="upcoming-section">
+    <h2 class="section-title">
+      <mat-icon>upcoming</mat-icon>
+      Próximas Atividades
+    </h2>
+    
+    <div class="upcoming-activities">
+      <div class="activities-list" *ngIf="upcomingActivities.length > 0; else noActivities">
+        <div class="activity-preview" *ngFor="let activity of upcomingActivities">
+          <div class="activity-time">
+            <span class="time">{{formatTime(activity)}}</span>
+            <span class="date">{{formatDate(activity.date)}}</span>
+          </div>
+          <div class="activity-info">
+            <h4>{{activity.title}}</h4>
+            <p>{{activity.description}}</p>
+            <p class="client-info">Cliente: {{activity.clientName}}</p>
+          </div>
+          <div class="activity-status" [class]="getActivityStatus(activity)">
+            <mat-icon *ngIf="activity.done">check_circle</mat-icon>
+            <mat-icon *ngIf="!activity.done">schedule</mat-icon>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noActivities>
+        <div class="no-activities">
+          <mat-icon>event_available</mat-icon>
+          <h3>Nenhuma atividade próxima</h3>
+          <p>Você está com a agenda livre para os próximos dias!</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
 </div>
