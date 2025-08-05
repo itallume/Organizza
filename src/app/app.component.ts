@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'AgendaPJ';
+  title = 'Organizza';
   isAuthPage = false;
 
   constructor(private router: Router) {

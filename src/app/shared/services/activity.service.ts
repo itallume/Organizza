@@ -9,7 +9,7 @@ import {UserService} from './user.service';
 })
 export class ActivityService {
   public selectedDate:Date;
-  private URL_ACTIVITIES = 'http://localhost:8080/activities';
+  private URL_ACTIVITIES = 'https://agendapj-backend.onrender.com/activities';
   public activities: Activity[] = [];
   
   // Subject para notificar quando as atividades mudarem
