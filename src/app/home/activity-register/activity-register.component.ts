@@ -59,7 +59,11 @@ export class ActivityRegisterComponent {
         
         this.activityService.atualizarComPost(this.activity).subscribe({
           next: (response) => {
-            this.activityService.updateActivities();
+            console.log('Atividade atualizada com sucesso');
+            // Força a atualização das atividades
+            setTimeout(() => {
+              this.activityService.notifyActivitiesUpdated();
+            }, 500); // Pequeno delay para garantir que foi salva no banco
             this.dialogRef.close(true);
           },
           error: (error) => {
@@ -84,7 +88,11 @@ export class ActivityRegisterComponent {
         // Criação
         this.activityService.register(this.activity).subscribe({
           next: () => {
-            this.activityService.updateActivities();
+            console.log('Atividade criada com sucesso');
+            // Força a atualização das atividades
+            setTimeout(() => {
+              this.activityService.notifyActivitiesUpdated();
+            }, 500); // Pequeno delay para garantir que foi salva no banco
             this.dialogRef.close(true);
           },
           error: (error) => {

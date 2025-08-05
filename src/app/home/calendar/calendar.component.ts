@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {Activity} from '../../shared/model/activity';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivityRegisterComponent} from '../activity-register/activity-register.component';
+import {Subscription} from 'rxjs';
 
 /** @title Datepicker inline calendar example */
 @Component({
@@ -17,9 +18,11 @@ import {ActivityRegisterComponent} from '../activity-register/activity-register.
   standalone: false,
   providers: [provideNativeDateAdapter()],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   allActivities: Activity[] = [];
   selectedDateActivities: Activity[] = [];
+  
+  private activitiesSubscription: Subscription = new Subscription();
 
   constructor(
     protected activityService: ActivityService,
@@ -36,6 +39,20 @@ export class CalendarComponent implements OnInit {
     
     this.loadAllActivities();
     this.onDateChange();
+    this.subscribeToActivitiesUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.activitiesSubscription.unsubscribe();
+  }
+
+  subscribeToActivitiesUpdates(): void {
+    // Se inscreve para atualizações automáticas das atividades
+    this.activitiesSubscription.add(
+      this.activityService.activitiesUpdated$.subscribe(() => {
+        this.loadAllActivities();
+      })
+    );
   }
 
   loadAllActivities(): void {

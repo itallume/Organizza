@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {map, Observable, catchError} from 'rxjs';
+import {map, Observable, catchError, Subject, BehaviorSubject, throwError, forkJoin, of} from 'rxjs';
 import {Activity} from '../model/activity';
 import {UserService} from './user.service';
 
@@ -11,10 +11,23 @@ export class ActivityService {
   public selectedDate:Date;
   private URL_ACTIVITIES = 'http://localhost:8080/activities';
   public activities: Activity[] = [];
+  
+  // Subject para notificar quando as atividades mudarem
+  private activitiesUpdated = new Subject<void>();
+  public activitiesUpdated$ = this.activitiesUpdated.asObservable();
+  
+  // BehaviorSubject para manter o estado atual das atividades
+  private activitiesSubject = new BehaviorSubject<Activity[]>([]);
+  public activities$ = this.activitiesSubject.asObservable();
 
   constructor(private http: HttpClient, private userService: UserService) {
     this.selectedDate = new Date();
    }
+
+  // Método público para notificar mudanças
+  notifyActivitiesUpdated() {
+    this.activitiesUpdated.next();
+  }
 
   register(activity: Activity): Observable<Activity> {
     // Verifica se há um usuário logado
@@ -44,6 +57,7 @@ export class ActivityService {
     if (!this.userService.isLoggedIn() || !this.userService.getCurrentUser().id) {
       console.warn('Usuário não logado - não é possível carregar atividades');
       this.activities = [];
+      this.activitiesSubject.next([]);
       return;
     }
 
@@ -54,46 +68,94 @@ export class ActivityService {
           const dateB = typeof b.date === 'string' ? new Date(b.date) : b.date;
           return dateA.getTime() - dateB.getTime();
         });
+        
+        // Notifica que as atividades foram atualizadas
+        this.activitiesSubject.next(this.activities);
+        this.activitiesUpdated.next();
       },
       error: (error) => {
         console.error('Erro ao carregar atividades:', error);
         this.activities = [];
+        this.activitiesSubject.next([]);
       }
     });
   }
 
   getAllActivities(userID: string): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${this.URL_ACTIVITIES}/user/${userID}`).pipe(
-      map(activities => activities.map(activity =>
-        new Activity(
-          activity.id,
-          activity.userID,
-          activity.title,
-          activity.description,
-          new Date(activity.date),
-          activity.hour,
-          activity.address,
-          activity.clientNumber,
-          activity.clientName,
-          activity.price,
-          activity.pricePayed,
-          activity.done,
-          activity.paied
-        )
-      ))
+    // Como o endpoint requer data obrigatória, vou buscar um range de datas
+    // Buscar atividades dos últimos 7 dias e próximos 7 dias
+    const dates: string[] = [];
+    const today = new Date();
+    
+    // Adiciona datas dos últimos 7 dias até os próximos 7 dias
+    for (let i = -7; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      dates.push(date.toISOString().split('T')[0]);
+    }
+    
+    console.log('Buscando atividades para as datas:', dates);
+    
+    const requests = dates.map(date => {
+      const url = `${this.URL_ACTIVITIES}?userID=${userID}&date=${date}`;
+      return this.http.get<any[]>(url).pipe(
+        catchError(error => {
+          // Se der erro em uma data específica, retorna array vazio
+          // console.warn(`Nenhuma atividade encontrada para ${date}`);
+          return of([]);
+        })
+      );
+    });
+    
+    // Combina todas as requisições usando forkJoin
+    return forkJoin(requests).pipe(
+      map(results => {
+        const allActivities = results.flat().filter(activity => activity);
+        console.log('Total de atividades encontradas:', allActivities.length);
+        
+        // Remove duplicatas baseado no ID
+        const uniqueActivities = allActivities.filter((activity, index, self) =>
+          index === self.findIndex(a => a.id === activity.id)
+        );
+        
+        return uniqueActivities.map((activity: any) =>
+          new Activity(
+            activity.id,
+            activity.userID,
+            activity.title,
+            activity.description,
+            activity.date,
+            activity.hour,
+            activity.address,
+            activity.clientNumber,
+            activity.clientName,
+            activity.price,
+            activity.pricePayed,
+            activity.done,
+            activity.paied
+          )
+        );
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar atividades:', error);
+        return throwError(() => error);
+      })
     );
   }
 
   getActivityPerDay(userID:string): Observable<Activity[]> {
     const dateStr = new Date(this.selectedDate).toISOString().slice(0, 10);
-    return this.http.get<Activity[]>(`${this.URL_ACTIVITIES}/user/${userID}/date/${dateStr}`).pipe(
-      map(activities => activities.map(activity =>
+    const url = `${this.URL_ACTIVITIES}?userID=${userID}&date=${dateStr}`;
+    console.log('Fazendo requisição para atividades do dia:', url);
+    
+    return this.http.get<any[]>(url).pipe(
+      map(activities => activities.map((activity: any) =>
         new Activity(
           activity.id,
           activity.userID,
           activity.title,
           activity.description,
-          new Date(activity.date),
+          activity.date, // Manter como string
           activity.hour,
           activity.address,
           activity.clientNumber,

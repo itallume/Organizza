@@ -48,6 +48,8 @@ export class ActivityFormComponent implements OnInit {
 
     this.activityService.register(this.activity).subscribe({
       next: () => {
+        // Notifica que as atividades foram atualizadas
+        this.activityService.notifyActivitiesUpdated();
         alert('Atividade criada com sucesso!');
         this.router.navigate(['/activities']);
       },

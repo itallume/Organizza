@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Activity } from '../../shared/model/activity';
 import { ActivityService } from '../../shared/services/activity.service';
 import { UserService } from '../../shared/services/user.service';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivityRegisterComponent } from '../activity-register/activity-register.component';
 import { ActivityDeleteComponent } from '../activity-delete/activity-delete.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activity-list',
@@ -13,12 +14,14 @@ import { ActivityDeleteComponent } from '../activity-delete/activity-delete.comp
   templateUrl: './activity-list.component.html',
   styleUrl: './activity-list.component.css'
 })
-export class ActivityListComponent implements OnInit {
+export class ActivityListComponent implements OnInit, OnDestroy {
   activities: Activity[] = [];
   filteredActivities: Activity[] = [];
   isLoading = false;
   filterStatus: 'all' | 'pending' | 'completed' | 'today' = 'all';
   searchTerm: string = '';
+
+  private activitiesSubscription: Subscription = new Subscription();
 
   get totalPending(): number {
     return this.activities.filter(a => !a.done).length;
@@ -42,26 +45,47 @@ export class ActivityListComponent implements OnInit {
     }
     
     this.loadAllActivities();
+    this.subscribeToActivitiesUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.activitiesSubscription.unsubscribe();
+  }
+
+  subscribeToActivitiesUpdates(): void {
+    // Se inscreve para atualizações automáticas das atividades
+    this.activitiesSubscription.add(
+      this.activityService.activitiesUpdated$.subscribe(() => {
+        this.loadAllActivities();
+      })
+    );
   }
 
   loadAllActivities(): void {
     this.isLoading = true;
     
     if (!this.userService.isLoggedIn() || !this.userService.getCurrentUser().id) {
+      console.warn('Usuário não logado ou sem ID');
       this.isLoading = false;
       return;
     }
 
+    const userId = this.userService.getCurrentUser().id;
+    console.log('Buscando atividades para o usuário:', userId);
+
     // Buscar todas as atividades do usuário
-    this.activityService.getAllActivities(this.userService.getCurrentUser().id).subscribe({
+    this.activityService.getAllActivities(userId).subscribe({
       next: (activities: Activity[]) => {
+        console.log('Atividades recebidas:', activities);
         this.activities = activities.sort((a, b) => {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          return dateB.getTime() - dateA.getTime(); // Mais recentes primeiro
+          // Ordenar por data corretamente
+          const dateA = typeof a.date === 'string' ? a.date : new Date(a.date).toISOString().split('T')[0];
+          const dateB = typeof b.date === 'string' ? b.date : new Date(b.date).toISOString().split('T')[0];
+          return dateB.localeCompare(dateA); // Mais recentes primeiro
         });
         this.applyFilters();
         this.isLoading = false;
+        console.log('Atividades após filtro:', this.filteredActivities);
       },
       error: (error: any) => {
         console.error('Erro ao carregar atividades:', error);
@@ -86,6 +110,9 @@ export class ActivityListComponent implements OnInit {
       case 'today':
         const today = new Date().toISOString().split('T')[0];
         filtered = filtered.filter(activity => {
+          if (typeof activity.date === 'string') {
+            return activity.date === today;
+          }
           const activityDate = new Date(activity.date).toISOString().split('T')[0];
           return activityDate === today;
         });
@@ -149,7 +176,15 @@ export class ActivityListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadAllActivities();
+        // Executar a exclusão e notificar sobre a atualização
+        this.activityService.remove(activity.id).subscribe({
+          next: () => {
+            this.activityService.notifyActivitiesUpdated();
+          },
+          error: (error: any) => {
+            console.error('Erro ao excluir atividade:', error);
+          }
+        });
       }
     });
   }
@@ -159,7 +194,8 @@ export class ActivityListComponent implements OnInit {
     
     this.activityService.atualizarComPost(activity).subscribe({
       next: () => {
-        this.loadAllActivities();
+        // Notifica que as atividades foram atualizadas
+        this.activityService.notifyActivitiesUpdated();
       },
       error: (error: any) => {
         console.error('Erro ao atualizar status da atividade:', error);
@@ -174,7 +210,8 @@ export class ActivityListComponent implements OnInit {
     
     this.activityService.atualizarComPost(activity).subscribe({
       next: () => {
-        this.loadAllActivities();
+        // Notifica que as atividades foram atualizadas
+        this.activityService.notifyActivitiesUpdated();
       },
       error: (error: any) => {
         console.error('Erro ao atualizar status de pagamento:', error);
@@ -185,6 +222,20 @@ export class ActivityListComponent implements OnInit {
   }
 
   formatDate(dateString: string | Date): string {
+    // Se for uma string no formato YYYY-MM-DD, criar uma data local
+    if (typeof dateString === 'string') {
+      const parts = dateString.split('-');
+      if (parts.length === 3) {
+        // Criar data local para evitar problemas de timezone
+        const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        return date.toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+      }
+    }
+    
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -224,12 +275,22 @@ export class ActivityListComponent implements OnInit {
 
   isToday(dateString: string | Date): boolean {
     const today = new Date().toISOString().split('T')[0];
+    
+    if (typeof dateString === 'string') {
+      return dateString === today;
+    }
+    
     const activityDate = new Date(dateString).toISOString().split('T')[0];
     return activityDate === today;
   }
 
   isPast(dateString: string | Date): boolean {
     const today = new Date().toISOString().split('T')[0];
+    
+    if (typeof dateString === 'string') {
+      return dateString < today;
+    }
+    
     const activityDate = new Date(dateString).toISOString().split('T')[0];
     return activityDate < today;
   }

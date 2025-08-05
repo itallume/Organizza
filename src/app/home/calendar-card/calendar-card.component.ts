@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
 import {ActivityService} from '../../shared/services/activity.service';
 import {Router} from '@angular/router';
 import {Activity} from '../../shared/model/activity';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-calendar-card',
@@ -10,7 +11,7 @@ import {Activity} from '../../shared/model/activity';
   templateUrl: './calendar-card.component.html',
   styleUrl: './calendar-card.component.css'
 })
-export class CalendarCardComponent implements OnInit {
+export class CalendarCardComponent implements OnInit, OnDestroy {
   activities: Activity[] = [];
   pendingActivities: Activity[] = [];
   completedActivities: Activity[] = [];
@@ -22,6 +23,8 @@ export class CalendarCardComponent implements OnInit {
   totalCompleted: number = 0;
   totalRevenue: number = 0;
   totalToday: number = 0;
+
+  private activitiesSubscription: Subscription = new Subscription();
 
   constructor(
     private userService: UserService, 
@@ -36,6 +39,20 @@ export class CalendarCardComponent implements OnInit {
     }
     
     this.loadActivities();
+    this.subscribeToActivitiesUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.activitiesSubscription.unsubscribe();
+  }
+
+  subscribeToActivitiesUpdates(): void {
+    // Se inscreve para atualizações automáticas das atividades
+    this.activitiesSubscription.add(
+      this.activityService.activitiesUpdated$.subscribe(() => {
+        this.loadActivities();
+      })
+    );
   }
 
   loadActivities(): void {
@@ -85,8 +102,13 @@ export class CalendarCardComponent implements OnInit {
     this.totalToday = this.todayActivities.length;
     
     // Calcular receita total baseada no valor das atividades pagas
-    this.totalRevenue = this.completedActivities.reduce((total, activity) => {
-      return total + (activity.paied ? activity.pricePayed : 0);
+    this.totalRevenue = this.activities.reduce((total, activity) => {
+      if (activity.paied && activity.pricePayed > 0) {
+        return total + activity.pricePayed;
+      } else if (activity.paied && activity.price > 0) {
+        return total + activity.price;
+      }
+      return total;
     }, 0);
   }
 
@@ -150,6 +172,14 @@ export class CalendarCardComponent implements OnInit {
       error: (error: any) => {
         console.error('Erro ao atualizar atividade:', error);
       }
+    });
+  }
+
+  // Método para formatar valores monetários
+  formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
     });
   }
 }

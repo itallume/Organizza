@@ -14,12 +14,20 @@ export class Activity {
     public done: boolean = false,
     public paied: boolean = false,
     ) {
+    // Se receber uma string de data, mantém como string para evitar problemas de timezone
     if (typeof this._date === 'string') {
-      this._date = new Date(this._date);
+      // Mantém como string se já está no formato correto YYYY-MM-DD
+      if (this._date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        // Não faz conversão, mantém como string
+      } else {
+        // Se for outro formato, converte para o formato correto
+        const dateObj = new Date(this._date);
+        this._date = dateObj.toISOString().split('T')[0];
+      }
+    } else if (this._date instanceof Date) {
+      // Se for Date, converte para string no formato YYYY-MM-DD
+      this._date = this._date.toISOString().split('T')[0];
     }
-    const hourSplit = hour.split(':').map(Number);
-    this._date.setHours(hourSplit[0]);
-    this._date.setMinutes(hourSplit[1]);
   }
 
   get userID(): string {
@@ -35,6 +43,10 @@ export class Activity {
   }
 
   set date(value: string | Date) {
-    this._date = value;
+    if (typeof value === 'string') {
+      this._date = value;
+    } else {
+      this._date = value.toISOString().split('T')[0];
+    }
   }
 }
