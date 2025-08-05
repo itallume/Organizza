@@ -43,10 +43,8 @@ export class CalendarCardComponent implements OnInit {
       return;
     }
 
-    // Define uma data padrão para buscar todas as atividades
-    this.activityService.selectedDate = new Date();
-    
-    this.activityService.getActivityPerDay(this.userService.getCurrentUser().id).subscribe({
+    // Buscar todas as atividades do usuário
+    this.activityService.getAllActivities(this.userService.getCurrentUser().id).subscribe({
       next: (activities: Activity[]) => {
         this.activities = activities;
         this.filterActivities();

@@ -5,6 +5,8 @@ import {RegisterComponent} from './user/register/register.component';
 import {CalendarComponent} from './home/calendar/calendar.component';
 import {CalendarCardComponent} from './home/calendar-card/calendar-card.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { ActivityListComponent } from './home/activity-list/activity-list.component';
+import { ActivityFormComponent } from './home/activity-form/activity-form.component';
 
 const routes: Routes =
   [
@@ -17,7 +19,21 @@ const routes: Routes =
     { path : 'home',
       component: CalendarCardComponent,
       canActivate: [AuthGuard]
-    }
+    },
+    { path : 'activities',
+      component: ActivityListComponent,
+      canActivate: [AuthGuard]
+    },
+    { path : 'calendar',
+      component: CalendarComponent,
+      canActivate: [AuthGuard]
+    },
+    { path : 'activity-register',
+      component: ActivityFormComponent,
+      canActivate: [AuthGuard]
+    },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '**', redirectTo: '/home' }
   ];
 
 @NgModule({

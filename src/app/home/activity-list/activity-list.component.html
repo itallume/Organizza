@@ -1,0 +1,225 @@
+<div class="activities-container">
+  <!-- Header da página -->
+  <div class="activities-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <mat-icon class="title-icon">event_note</mat-icon>
+          Minhas Atividades
+        </h1>
+        <p class="page-subtitle">Gerencie todas as suas atividades agendadas</p>
+      </div>
+      
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="openNewActivityDialog()" class="new-activity-btn">
+          <mat-icon>add</mat-icon>
+          Nova Atividade
+        </button>
+        
+        <button mat-stroked-button (click)="goToCalendar()" class="calendar-btn">
+          <mat-icon>calendar_today</mat-icon>
+          Calendário
+        </button>
+        
+        <button mat-stroked-button (click)="goToHome()" class="home-btn">
+          <mat-icon>home</mat-icon>
+          Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros e Busca -->
+  <div class="filters-section">
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar atividades...</mat-label>
+        <input matInput 
+               [(ngModel)]="searchTerm" 
+               (ngModelChange)="onSearchChange()"
+               placeholder="Título, descrição, cliente, endereço...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="filters-container">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Filtrar por status</mat-label>
+        <mat-select [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()">
+          <mat-option value="all">Todas</mat-option>
+          <mat-option value="pending">Pendentes</mat-option>
+          <mat-option value="completed">Concluídas</mat-option>
+          <mat-option value="today">Hoje</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+    <p>Carregando atividades...</p>
+  </div>
+
+  <!-- Lista de atividades -->
+  <div class="activities-list" *ngIf="!isLoading">
+    <!-- Estatísticas rápidas -->
+    <div class="quick-stats">
+      <div class="stat-card">
+        <mat-icon>event_note</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{activities.length}}</span>
+          <span class="stat-label">Total</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <mat-icon>schedule</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{totalPending}}</span>
+          <span class="stat-label">Pendentes</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <mat-icon>check_circle</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{totalCompleted}}</span>
+          <span class="stat-label">Concluídas</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <mat-icon>today</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{filteredActivities.length}}</span>
+          <span class="stat-label">Filtradas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards das atividades -->
+    <div class="activities-grid" *ngIf="filteredActivities.length > 0; else noActivities">
+      <mat-card class="activity-card" 
+                *ngFor="let activity of filteredActivities" 
+                [class]="getActivityStatusClass(activity)">
+        
+        <!-- Header do card -->
+        <mat-card-header>
+          <div mat-card-avatar class="activity-avatar">
+            <mat-icon>{{getActivityIcon(activity)}}</mat-icon>
+          </div>
+          
+          <mat-card-title>{{activity.title}}</mat-card-title>
+          
+          <mat-card-subtitle>
+            <div class="activity-date-time">
+              <span class="date">{{formatDate(activity.date)}}</span>
+              <span class="time">{{activity.hour}}</span>
+            </div>
+          </mat-card-subtitle>
+          
+          <div class="card-actions-header">
+            <button mat-icon-button [matMenuTriggerFor]="activityMenu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            
+            <mat-menu #activityMenu="matMenu">
+              <button mat-menu-item (click)="editActivity(activity)">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item (click)="deleteActivity(activity)">
+                <mat-icon>delete</mat-icon>
+                <span>Excluir</span>
+              </button>
+            </mat-menu>
+          </div>
+        </mat-card-header>
+
+        <!-- Conteúdo do card -->
+        <mat-card-content>
+          <div class="activity-description">
+            <p>{{activity.description}}</p>
+          </div>
+          
+          <div class="activity-details">
+            <div class="detail-item" *ngIf="activity.clientName">
+              <mat-icon>person</mat-icon>
+              <span>{{activity.clientName}}</span>
+            </div>
+            
+            <div class="detail-item" *ngIf="activity.clientNumber">
+              <mat-icon>phone</mat-icon>
+              <span>{{activity.clientNumber}}</span>
+            </div>
+            
+            <div class="detail-item" *ngIf="activity.address">
+              <mat-icon>location_on</mat-icon>
+              <span>{{activity.address}}</span>
+            </div>
+            
+            <div class="detail-item price-info">
+              <mat-icon>attach_money</mat-icon>
+              <span>{{formatCurrency(activity.price)}}</span>
+              <span class="price-status" *ngIf="activity.pricePayed > 0">
+                ({{formatCurrency(activity.pricePayed)}} pago)
+              </span>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <!-- Ações do card -->
+        <mat-card-actions>
+          <div class="status-toggles">
+            <mat-checkbox 
+              [checked]="activity.done"
+              (change)="toggleActivityStatus(activity)"
+              color="primary">
+              Concluída
+            </mat-checkbox>
+            
+            <mat-checkbox 
+              [checked]="activity.paied"
+              (change)="togglePaymentStatus(activity)"
+              color="accent">
+              Paga
+            </mat-checkbox>
+          </div>
+          
+          <div class="card-actions-buttons">
+            <button mat-stroked-button 
+                    color="primary" 
+                    (click)="editActivity(activity)">
+              <mat-icon>edit</mat-icon>
+              Editar
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Mensagem quando não há atividades -->
+    <ng-template #noActivities>
+      <div class="no-activities">
+        <div class="no-activities-icon">
+          <mat-icon>event_available</mat-icon>
+        </div>
+        <h3>Nenhuma atividade encontrada</h3>
+        <p *ngIf="searchTerm || filterStatus !== 'all'; else noActivitiesAtAll">
+          Tente ajustar os filtros ou termo de busca para encontrar suas atividades.
+        </p>
+        <ng-template #noActivitiesAtAll>
+          <p>Você ainda não possui atividades cadastradas.</p>
+        </ng-template>
+        <button mat-raised-button 
+                color="primary" 
+                (click)="openNewActivityDialog()"
+                class="create-first-activity">
+          <mat-icon>add</mat-icon>
+          Criar primeira atividade
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

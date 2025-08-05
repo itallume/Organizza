@@ -1,5 +1,148 @@
-<mat-card class="demo-inline-calendar-card">
-  <mat-calendar [(selected)]="activityService.selectedDate" (selectedChange)="onDateChange()"></mat-calendar>
-</mat-card>
+<div class="calendar-container">
+  <!-- Header da página -->
+  <div class="calendar-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <mat-icon class="title-icon">calendar_today</mat-icon>
+          Calendário
+        </h1>
+        <p class="page-subtitle">Visualize suas atividades em formato de calendário</p>
+      </div>
+      
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="openNewActivityDialog()" class="new-activity-btn">
+          <mat-icon>add</mat-icon>
+          Nova Atividade
+        </button>
+        
+        <button mat-stroked-button (click)="goToActivities()" class="activities-btn">
+          <mat-icon>event_note</mat-icon>
+          Minhas Atividades
+        </button>
+        
+        <button mat-stroked-button (click)="goToHome()" class="home-btn">
+          <mat-icon>home</mat-icon>
+          Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
 
-<p>Data Selecionada: {{ activityService.selectedDate | date }}</p>
+  <div class="calendar-content">
+    <!-- Calendário -->
+    <div class="calendar-section">
+      <mat-card class="calendar-card">
+        <mat-card-header>
+          <mat-card-title>Selecione uma Data</mat-card-title>
+          <mat-card-subtitle>Clique em uma data para ver as atividades do dia</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <mat-calendar 
+            [(selected)]="activityService.selectedDate" 
+            (selectedChange)="onDateChange()"
+            class="custom-calendar">
+          </mat-calendar>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Atividades da data selecionada -->
+    <div class="activities-section">
+      <mat-card class="activities-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ activityService.selectedDate ? formatDate(activityService.selectedDate) : 'Nenhuma data selecionada' }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ selectedDateActivities.length }} atividade(s) encontrada(s)
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="activities-list" *ngIf="selectedDateActivities.length > 0; else noActivitiesSelected">
+            <div class="activity-item" 
+                 *ngFor="let activity of selectedDateActivities"
+                 [class]="getActivityStatusClass(activity)"
+                 (click)="editActivity(activity)">
+              
+              <div class="activity-time">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ formatTime(activity) }}</span>
+              </div>
+              
+              <div class="activity-details">
+                <h4 class="activity-title">{{ activity.title }}</h4>
+                <p class="activity-description">{{ activity.description }}</p>
+                
+                <div class="activity-meta">
+                  <div class="meta-item" *ngIf="activity.clientName">
+                    <mat-icon>person</mat-icon>
+                    <span>{{ activity.clientName }}</span>
+                  </div>
+                  
+                  <div class="meta-item" *ngIf="activity.address">
+                    <mat-icon>location_on</mat-icon>
+                    <span>{{ activity.address }}</span>
+                  </div>
+                  
+                  <div class="meta-item price">
+                    <mat-icon>attach_money</mat-icon>
+                    <span>R$ {{ activity.price }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="activity-status">
+                <div class="status-badges">
+                  <span class="badge done" *ngIf="activity.done">
+                    <mat-icon>check_circle</mat-icon>
+                    Concluída
+                  </span>
+                  
+                  <span class="badge paid" *ngIf="activity.paied">
+                    <mat-icon>payment</mat-icon>
+                    Paga
+                  </span>
+                  
+                  <span class="badge pending" *ngIf="!activity.done && !isPast(activity.date)">
+                    <mat-icon>schedule</mat-icon>
+                    Pendente
+                  </span>
+                  
+                  <span class="badge overdue" *ngIf="!activity.done && isPast(activity.date)">
+                    <mat-icon>warning</mat-icon>
+                    Atrasada
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noActivitiesSelected>
+            <div class="no-activities-selected">
+              <div class="no-activities-icon">
+                <mat-icon>event_available</mat-icon>
+              </div>
+              <h3>Nenhuma atividade nesta data</h3>
+              <p *ngIf="activityService.selectedDate; else selectDateMessage">
+                Não há atividades agendadas para {{ formatDate(activityService.selectedDate) }}.
+              </p>
+              <ng-template #selectDateMessage>
+                <p>Selecione uma data no calendário para visualizar as atividades.</p>
+              </ng-template>
+              <button mat-raised-button 
+                      color="primary" 
+                      (click)="openNewActivityDialog()"
+                      *ngIf="activityService.selectedDate">
+                <mat-icon>add</mat-icon>
+                Criar atividade para esta data
+              </button>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

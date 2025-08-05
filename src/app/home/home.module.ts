@@ -25,6 +25,11 @@ import {
 import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatNativeDateModule} from '@angular/material/core';
 import { ActivityDeleteComponent } from './activity-delete/activity-delete.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivityFormComponent } from './activity-form/activity-form.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +38,8 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
     CalendarCardComponent,
     ActivityRegisterComponent,
     ActivityDeleteComponent,
+    ActivityListComponent,
+    ActivityFormComponent,
   ],
   imports: [
     CommonModule,
@@ -59,7 +66,10 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
     MatInputModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressSpinnerModule
 
   ],
 
@@ -69,6 +79,8 @@ import { ActivityDeleteComponent } from './activity-delete/activity-delete.compo
     CalendarCardComponent,
     ActivityRegisterComponent,
     ActivityDeleteComponent,
+    ActivityListComponent,
+    ActivityFormComponent,
   ]
 })
 export class HomeModule {

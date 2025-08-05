@@ -1,0 +1,194 @@
+<div class="activity-form-container">
+  <!-- Header da página -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <mat-icon class="title-icon">add_circle</mat-icon>
+          Nova Atividade
+        </h1>
+        <p class="page-subtitle">Cadastre uma nova atividade no seu cronograma</p>
+      </div>
+      
+      <div class="header-actions">
+        <button mat-stroked-button (click)="goToActivities()" class="activities-btn">
+          <mat-icon>event_note</mat-icon>
+          Minhas Atividades
+        </button>
+        
+        <button mat-stroked-button (click)="goToHome()" class="home-btn">
+          <mat-icon>home</mat-icon>
+          Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulário -->
+  <div class="form-content">
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Detalhes da Atividade</mat-card-title>
+        <mat-card-subtitle>Preencha as informações da nova atividade</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form class="activity-form" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Título*</mat-label>
+              <input matInput 
+                     [(ngModel)]="activity.title" 
+                     name="title" 
+                     required
+                     placeholder="Ex: Reunião com cliente">
+              <mat-icon matSuffix>title</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descrição*</mat-label>
+              <textarea matInput 
+                        [(ngModel)]="activity.description" 
+                        name="description" 
+                        required
+                        rows="3"
+                        placeholder="Descreva os detalhes da atividade..."></textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Data*</mat-label>
+              <input matInput
+                     [matDatepicker]="picker"
+                     [(ngModel)]="activity.date"
+                     name="date"
+                     required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Hora*</mat-label>
+              <input matInput
+                     [(ngModel)]="activity.hour"
+                     name="hour"
+                     required
+                     maxlength="5"
+                     placeholder="HH:MM"
+                     (input)="formatHour()"
+                     (keypress)="allowOnlyNumbers($event)">
+              <mat-icon matSuffix>schedule</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Endereço</mat-label>
+              <input matInput 
+                     [(ngModel)]="activity.address" 
+                     name="address"
+                     placeholder="Local da atividade">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Nome do Cliente</mat-label>
+              <input matInput 
+                     [(ngModel)]="activity.clientName" 
+                     name="clientName"
+                     placeholder="Nome completo do cliente">
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Telefone do Cliente</mat-label>
+              <input matInput 
+                     [(ngModel)]="activity.clientNumber" 
+                     name="clientNumber"
+                     placeholder="(11) 99999-9999"
+                     (keypress)="allowOnlyNumbers($event)">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Valor Total</mat-label>
+              <input matInput 
+                     type="number" 
+                     [(ngModel)]="activity.price" 
+                     name="price" 
+                     step="0.01" 
+                     min="0"
+                     placeholder="0,00">
+              <span matTextPrefix>R$ </span>
+              <mat-icon matSuffix>attach_money</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Valor Pago</mat-label>
+              <input matInput 
+                     type="number" 
+                     [(ngModel)]="activity.pricePayed" 
+                     name="pricePayed" 
+                     step="0.01" 
+                     min="0"
+                     placeholder="0,00">
+              <span matTextPrefix>R$ </span>
+              <mat-icon matSuffix>payment</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <div class="checkboxes-container">
+              <mat-checkbox [(ngModel)]="activity.done" name="done" color="primary">
+                Atividade já foi concluída
+              </mat-checkbox>
+              
+              <mat-checkbox [(ngModel)]="activity.paied" name="paied" color="accent">
+                Pagamento já foi realizado
+              </mat-checkbox>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions class="form-actions">
+        <div class="actions-left">
+          <button mat-stroked-button 
+                  type="button" 
+                  (click)="clearForm()"
+                  [disabled]="isSubmitting">
+            <mat-icon>clear</mat-icon>
+            Limpar
+          </button>
+        </div>
+        
+        <div class="actions-right">
+          <button mat-stroked-button 
+                  type="button" 
+                  (click)="goToActivities()"
+                  [disabled]="isSubmitting">
+            Cancelar
+          </button>
+          
+          <button mat-raised-button 
+                  color="primary" 
+                  type="submit" 
+                  (click)="onSubmit()"
+                  [disabled]="isSubmitting">
+            <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            {{ isSubmitting ? 'Salvando...' : 'Salvar Atividade' }}
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
