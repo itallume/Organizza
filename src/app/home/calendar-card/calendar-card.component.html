@@ -18,7 +18,7 @@
     </h2>
     
     <div class="navigation-cards">
-      <div class="nav-card" (click)="navigateToActivities()">
+      <div class="nav-card" (click)="navigateToActivities()" role="button" tabindex="0" (keydown.enter)="navigateToActivities()">
         <div class="nav-card-icon activities-icon">
           <mat-icon>event_note</mat-icon>
         </div>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="nav-card" (click)="navigateToCalendar()">
+      <div class="nav-card" (click)="navigateToCalendar()" role="button" tabindex="0" (keydown.enter)="navigateToCalendar()">
         <div class="nav-card-icon calendar-icon">
           <mat-icon>calendar_today</mat-icon>
         </div>
@@ -52,7 +52,7 @@
         </div>
       </div>
 
-      <div class="nav-card" (click)="navigateToNewActivity()">
+      <div class="nav-card" (click)="navigateToNewActivity()" role="button" tabindex="0" (keydown.enter)="navigateToNewActivity()">
         <div class="nav-card-icon add-icon">
           <mat-icon>add_circle</mat-icon>
         </div>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <div class="nav-card" (click)="navigateToReports()">
+      <div class="nav-card" (click)="navigateToReports()" role="button" tabindex="0" (keydown.enter)="navigateToReports()">
         <div class="nav-card-icon reports-icon">
           <mat-icon>assessment</mat-icon>
         </div>

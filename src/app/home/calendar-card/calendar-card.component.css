@@ -93,6 +93,11 @@
   display: flex;
   flex-direction: column;
   height: 280px;
+  /* Melhorias para touch devices */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: manipulation;
+  min-height: 44px; /* Minimum touch target size */
 }
 
 .nav-card:hover {
@@ -417,36 +422,103 @@
   }
 }
 
+/* Melhorias gerais para touch devices */
+button, .nav-card, .summary-card, .upcoming-activity-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Melhoria dos targets de toque */
+.activity-actions button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+}
+
+.schedule-activity-btn {
+  min-height: 44px;
+  padding: 12px 24px;
+}
+
+/* Espaçamento adequado para botões em mobile */
+.activity-actions {
+  gap: 6px;
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1.5rem;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .dashboard-header {
+    padding: 1.5rem 1rem;
+    text-align: center;
   }
   
   .dashboard-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
   
   .title-icon {
-    font-size: 3rem !important;
-    width: 3rem !important;
-    height: 3rem !important;
+    font-size: 2.5rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
   }
   
   .navigation-cards {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   
   .nav-card {
-    padding: 2rem;
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
     height: auto;
+  }
+
+  .nav-card-icon {
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+
+  .nav-card-content {
+    margin-bottom: 1rem;
+  }
+
+  .nav-card-action {
+    align-self: center;
   }
   
   .quick-summary {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .summary-card {
+    padding: 1.25rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .summary-icon {
+    margin-bottom: 0.75rem;
+    align-self: center;
   }
   
   .activity-preview {
@@ -459,23 +531,168 @@
   .activity-time {
     align-self: center;
   }
+
+  /* Melhor espaçamento para toque em tablets */
+  .activity-actions {
+    gap: 8px;
+  }
+  
+  .activity-actions button {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .nav-card {
+    min-height: 120px;
+  }
 }
 
 @media (max-width: 480px) {
   .dashboard-container {
-    padding: 1rem;
+    padding: 0.75rem;
+    gap: 1.25rem;
+  }
+
+  .dashboard-header {
+    padding: 1.25rem 0.75rem;
   }
   
+  .dashboard-title {
+    font-size: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .title-icon {
+    font-size: 2rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Seções com menos padding */
+  .navigation-section,
+  .summary-section,
+  .upcoming-section {
+    padding: 1rem 0.75rem;
+  }
+
+  /* Cards de navegação otimizados */
+  .navigation-cards {
+    gap: 0.75rem;
+  }
+
+  .nav-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .nav-card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.75rem;
+  }
+
+  .nav-card-icon mat-icon {
+    font-size: 2rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  .nav-card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-card-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .nav-card-stats {
+    gap: 0.25rem;
+  }
+
+  .stats-number {
+    font-size: 1.3rem;
+  }
+
+  .stats-label {
+    font-size: 0.7rem;
+  }
+
+  /* Resumo em uma coluna */
   .quick-summary {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-  
+
   .summary-card {
-    padding: 1.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .summary-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0;
+    margin-right: 1rem;
+    align-self: flex-start;
+  }
+
+  .summary-icon mat-icon {
+    font-size: 1.5rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .summary-content h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-number {
+    font-size: 1.4rem;
   }
   
   .upcoming-activities {
-    padding: 1.5rem;
+    padding: 1rem 0.75rem;
+  }
+
+  /* Estado vazio mais compacto */
+  .no-upcoming-activities {
+    padding: 2rem 1rem;
+  }
+
+  .no-upcoming-activities .no-activities-icon mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .no-upcoming-activities h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .no-upcoming-activities p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .schedule-activity-btn {
+    padding: 10px 20px;
+    font-size: 0.8rem;
   }
 }
 
@@ -732,6 +949,129 @@
   
   .time-text {
     font-size: 1rem;
+  }
+}
+
+/* Responsividade para telas muito pequenas (360px e menores) */
+@media (max-width: 360px) {
+  .dashboard-container {
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+
+  .dashboard-header {
+    padding: 1rem 0.5rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.3rem;
+  }
+
+  .title-icon {
+    font-size: 1.8rem !important;
+    width: 1.8rem !important;
+    height: 1.8rem !important;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .navigation-section,
+  .summary-section,
+  .upcoming-section {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .nav-card {
+    padding: 1rem;
+  }
+
+  .nav-card-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav-card-icon mat-icon {
+    font-size: 1.5rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .nav-card-title {
+    font-size: 1rem;
+  }
+
+  .nav-card-description {
+    font-size: 0.75rem;
+  }
+
+  .summary-card {
+    padding: 0.875rem;
+  }
+
+  .summary-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .summary-icon mat-icon {
+    font-size: 1.2rem !important;
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+
+  .summary-content h4 {
+    font-size: 0.8rem;
+  }
+
+  .summary-number {
+    font-size: 1.2rem;
+  }
+
+  .upcoming-activities {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .upcoming-activity-card {
+    padding: 1rem;
+  }
+
+  .activity-date-badge {
+    min-width: 70px;
+    padding: 0.75rem;
+  }
+
+  .date-text {
+    font-size: 0.7rem;
+  }
+
+  .time-text {
+    font-size: 0.95rem;
+  }
+
+  .activity-title {
+    font-size: 1rem;
+  }
+
+  .activity-description {
+    font-size: 0.8rem;
+  }
+
+  .no-upcoming-activities {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .no-upcoming-activities h3 {
+    font-size: 1.1rem;
+  }
+
+  .no-upcoming-activities p {
+    font-size: 0.85rem;
   }
 }
 
