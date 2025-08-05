@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import {map, Observable, catchError, Subject, BehaviorSubject, throwError, forkJoin, of} from 'rxjs';
 import {Activity} from '../model/activity';
 import {UserService} from './user.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
   public selectedDate:Date;
-  private URL_ACTIVITIES = 'https://agendapj-backend.onrender.com/activities';
+  private URL_ACTIVITIES = `${environment.apiUrl}/activities`;
   public activities: Activity[] = [];
   
   // Subject para notificar quando as atividades mudarem
