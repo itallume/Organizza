@@ -142,33 +142,87 @@
   <div class="upcoming-section">
     <h2 class="section-title">
       <mat-icon>upcoming</mat-icon>
-      Próximas Atividades
+      Próximas Atividades (2 dias)
     </h2>
     
     <div class="upcoming-activities">
-      <div class="activities-list" *ngIf="upcomingActivities.length > 0; else noActivities">
-        <div class="activity-preview" *ngFor="let activity of upcomingActivities">
-          <div class="activity-time">
-            <span class="time">{{formatTime(activity)}}</span>
-            <span class="date">{{formatDate(activity.date)}}</span>
+      <div class="activities-list" *ngIf="upcomingActivities.length > 0; else noUpcomingActivities">
+        <div class="upcoming-activity-card" 
+             *ngFor="let activity of upcomingActivities"
+             [class]="getActivityStatusClass(activity)">
+          
+          <!-- Data da atividade -->
+          <div class="activity-date-badge">
+            <div class="date-text">{{formatDateForCard(activity.date)}}</div>
+            <div class="time-text">{{formatTime(activity)}}</div>
           </div>
-          <div class="activity-info">
-            <h4>{{activity.title}}</h4>
-            <p>{{activity.description}}</p>
-            <p class="client-info">Cliente: {{activity.clientName}}</p>
+          
+          <!-- Conteúdo da atividade -->
+          <div class="activity-content">
+            <div class="activity-header">
+              <h4 class="activity-title">{{activity.title}}</h4>
+              <div class="activity-status-icon">
+                <mat-icon *ngIf="!activity.done">schedule</mat-icon>
+                <mat-icon *ngIf="activity.done" class="completed-icon">check_circle</mat-icon>
+              </div>
+            </div>
+            
+            <p class="activity-description">{{activity.description}}</p>
+            
+            <div class="activity-details">
+              <div class="detail-row" *ngIf="activity.clientName">
+                <mat-icon class="detail-icon">person</mat-icon>
+                <span>{{activity.clientName}}</span>
+              </div>
+              
+              <div class="detail-row" *ngIf="activity.address">
+                <mat-icon class="detail-icon">location_on</mat-icon>
+                <span>{{activity.address}}</span>
+              </div>
+              
+              <div class="detail-row price-row">
+                <mat-icon class="detail-icon">attach_money</mat-icon>
+                <span>{{formatCurrency(activity.price)}}</span>
+                <span class="payment-status" [class.paid]="activity.paied">
+                  {{activity.paied ? 'Pago' : 'Pendente'}}
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="activity-status" [class]="getActivityStatus(activity)">
-            <mat-icon *ngIf="activity.done">check_circle</mat-icon>
-            <mat-icon *ngIf="!activity.done">schedule</mat-icon>
+          
+          <!-- Ações rápidas -->
+          <div class="activity-actions">
+            <button mat-icon-button 
+                    color="primary"
+                    (click)="markAsCompleted(activity)"
+                    *ngIf="!activity.done"
+                    matTooltip="Marcar como concluída">
+              <mat-icon>check</mat-icon>
+            </button>
+            
+            <button mat-icon-button 
+                    color="accent"
+                    matTooltip="Editar atividade">
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
         </div>
       </div>
       
-      <ng-template #noActivities>
-        <div class="no-activities">
-          <mat-icon>event_available</mat-icon>
+      <ng-template #noUpcomingActivities>
+        <div class="no-upcoming-activities">
+          <div class="no-activities-icon">
+            <mat-icon>event_available</mat-icon>
+          </div>
           <h3>Nenhuma atividade próxima</h3>
-          <p>Você está com a agenda livre para os próximos dias!</p>
+          <p>Você não tem atividades agendadas para os próximos 2 dias!</p>
+          <button mat-raised-button 
+                  color="primary" 
+                  (click)="navigateToNewActivity()"
+                  class="schedule-activity-btn">
+            <mat-icon>add</mat-icon>
+            Agendar Atividade
+          </button>
         </div>
       </ng-template>
     </div>

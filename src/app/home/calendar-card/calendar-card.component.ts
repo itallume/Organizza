@@ -114,16 +114,39 @@ export class CalendarCardComponent implements OnInit, OnDestroy {
 
   getUpcomingActivities(): void {
     const today = new Date();
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
+    const todayStr = today.toISOString().split('T')[0];
+    
+    // Próximos 2 dias (não incluindo hoje)
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const dayAfterTomorrow = new Date(today);
+    dayAfterTomorrow.setDate(today.getDate() + 2);
+    
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    const dayAfterTomorrowStr = dayAfterTomorrow.toISOString().split('T')[0];
     
     this.upcomingActivities = this.activities
       .filter(activity => {
-        const activityDate = new Date(activity.date);
-        return activityDate >= today && activityDate <= nextWeek && !activity.done;
+        const activityDate = typeof activity.date === 'string' 
+          ? activity.date 
+          : new Date(activity.date).toISOString().split('T')[0];
+        
+        // Apenas atividades dos próximos 2 dias (excluindo hoje)
+        return (activityDate === tomorrowStr || activityDate === dayAfterTomorrowStr) && !activity.done;
       })
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .slice(0, 5); // Mostrar apenas as próximas 5 atividades
+      .sort((a, b) => {
+        // Ordenar por data e depois por horário
+        const dateA = typeof a.date === 'string' ? a.date : new Date(a.date).toISOString().split('T')[0];
+        const dateB = typeof b.date === 'string' ? b.date : new Date(b.date).toISOString().split('T')[0];
+        
+        if (dateA !== dateB) {
+          return dateA.localeCompare(dateB);
+        }
+        
+        // Se a data for igual, ordenar por horário
+        return a.hour.localeCompare(b.hour);
+      })
+      .slice(0, 6); // Mostrar até 6 atividades próximas
   }
 
   // Métodos de navegação
@@ -145,11 +168,79 @@ export class CalendarCardComponent implements OnInit, OnDestroy {
 
   // Método para formatar data
   formatDate(dateString: string | Date): string {
+    if (typeof dateString === 'string') {
+      const parts = dateString.split('-');
+      if (parts.length === 3) {
+        const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        return date.toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit'
+        });
+      }
+    }
+    
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit'
     });
+  }
+
+  // Método para formatar data completa para cards
+  formatDateForCard(dateString: string | Date): string {
+    if (typeof dateString === 'string') {
+      const parts = dateString.split('-');
+      if (parts.length === 3) {
+        const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const dayAfter = new Date(today);
+        dayAfter.setDate(today.getDate() + 2);
+        
+        const dateStr = date.toISOString().split('T')[0];
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        const dayAfterStr = dayAfter.toISOString().split('T')[0];
+        
+        if (dateStr === tomorrowStr) {
+          return 'Amanhã';
+        } else if (dateStr === dayAfterStr) {
+          return 'Depois de amanhã';
+        }
+        
+        return date.toLocaleDateString('pt-BR', {
+          weekday: 'short',
+          day: '2-digit',
+          month: '2-digit'
+        });
+      }
+    }
+    
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      weekday: 'short',
+      day: '2-digit',
+      month: '2-digit'
+    });
+  }
+
+  // Método para obter classe CSS do status da atividade
+  getActivityStatusClass(activity: Activity): string {
+    if (activity.done) {
+      return 'completed';
+    }
+    
+    const today = new Date().toISOString().split('T')[0];
+    const activityDate = typeof activity.date === 'string' 
+      ? activity.date 
+      : new Date(activity.date).toISOString().split('T')[0];
+    
+    if (activityDate < today) {
+      return 'overdue';
+    } else if (activityDate === today) {
+      return 'today';
+    }
+    return 'upcoming';
   }
 
   // Método para formatar hora
