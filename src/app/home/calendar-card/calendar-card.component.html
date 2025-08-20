@@ -85,6 +85,23 @@
           <mat-icon>arrow_forward</mat-icon>
         </div>
       </div>
+
+      <div class="nav-card" (click)="navigateToAnnualCalendar()" role="button" tabindex="0" (keydown.enter)="navigateToAnnualCalendar()">
+        <div class="nav-card-icon annual-calendar-icon">
+          <mat-icon>calendar_view_month</mat-icon>
+        </div>
+        <div class="nav-card-content">
+          <h3 class="nav-card-title">Calendário Anual</h3>
+          <p class="nav-card-description">Visualização geral de todas as atividades do ano</p>
+          <div class="nav-card-stats">
+            <span class="stats-number">{{currentYear}}</span>
+            <span class="stats-label">ano</span>
+          </div>
+        </div>
+        <div class="nav-card-action">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+      </div>
     </div>
   </div>
 

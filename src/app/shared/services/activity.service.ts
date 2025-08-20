@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {map, Observable, catchError, Subject, BehaviorSubject, throwError, forkJoin, of} from 'rxjs';
+import {map, Observable, catchError, Subject, BehaviorSubject, throwError, forkJoin, of, from, concatMap, toArray} from 'rxjs';
 import {Activity} from '../model/activity';
 import {UserService} from './user.service';
 import {environment} from '../../../environments/environment';
@@ -139,6 +139,79 @@ export class ActivityService {
       }),
       catchError(error => {
         console.error('Erro ao buscar atividades:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Método específico para buscar atividades do ano inteiro (para o calendário anual)
+  getAllActivitiesForYear(userID: string, year: number): Observable<Activity[]> {
+    const dates: string[] = [];
+    
+    // Gera todas as datas do ano especificado
+    for (let month = 0; month < 12; month++) {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+    }
+    
+    console.log(`Buscando atividades para o ano ${year}:`, dates.length, 'datas');
+    
+    // Divide em lotes para não sobrecarregar o servidor
+    const batchSize = 30; // 30 requisições por lote
+    const batches: string[][] = [];
+    
+    for (let i = 0; i < dates.length; i += batchSize) {
+      batches.push(dates.slice(i, i + batchSize));
+    }
+    
+    // Processa os lotes sequencialmente
+    return from(batches).pipe(
+      concatMap((batch: string[]) => {
+        const requests = batch.map((date: string) => {
+          const url = `${this.URL_ACTIVITIES}?userID=${userID}&date=${date}`;
+          return this.http.get<any[]>(url).pipe(
+            catchError(error => {
+              // Se der erro em uma data específica, retorna array vazio
+              return of([]);
+            })
+          );
+        });
+        
+        return forkJoin(requests);
+      }),
+      toArray(),
+      map((batchResults: any[][]) => {
+        const allActivities = batchResults.flat().flat().filter((activity: any) => activity);
+        console.log(`Total de atividades encontradas para ${year}:`, allActivities.length);
+        
+        // Remove duplicatas baseado no ID
+        const uniqueActivities = allActivities.filter((activity: any, index: number, self: any[]) =>
+          index === self.findIndex((a: any) => a.id === activity.id)
+        );
+        
+        return uniqueActivities.map((activity: any) =>
+          new Activity(
+            activity.id,
+            activity.userID,
+            activity.title,
+            activity.description,
+            activity.date,
+            activity.hour,
+            activity.address,
+            activity.clientNumber,
+            activity.clientName,
+            activity.price,
+            activity.pricePayed,
+            activity.done,
+            activity.paied
+          )
+        );
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar atividades do ano:', error);
         return throwError(() => error);
       })
     );

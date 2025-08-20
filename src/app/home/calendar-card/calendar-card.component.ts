@@ -166,6 +166,15 @@ export class CalendarCardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/reports']);
   }
 
+  navigateToAnnualCalendar(): void {
+    this.router.navigate(['/calendario-anual']);
+  }
+
+  // Propriedade para exibir o ano atual no card
+  get currentYear(): number {
+    return new Date().getFullYear();
+  }
+
   // Método para formatar data
   formatDate(dateString: string | Date): string {
     if (typeof dateString === 'string') {

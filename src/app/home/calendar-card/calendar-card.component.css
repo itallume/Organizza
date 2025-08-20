@@ -135,6 +135,11 @@
   box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
 }
 
+.nav-card-icon.annual-calendar-icon {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
 .nav-card-icon.activities-icon {
   background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
   box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);

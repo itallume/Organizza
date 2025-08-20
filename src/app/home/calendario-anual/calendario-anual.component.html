@@ -1,0 +1,138 @@
+<div class="annual-calendar-container">
+  <!-- Header com navegação -->
+  <div class="annual-header">
+    <button mat-icon-button 
+            class="back-button"
+            (click)="goBack()"
+            matTooltip="Voltar ao Dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    
+    <div class="annual-title">
+      <mat-icon class="title-icon">calendar_view_month</mat-icon>
+      <h1>Calendário Anual - {{currentYear}}</h1>
+    </div>
+    
+    <div class="annual-actions">
+      <button mat-icon-button 
+              (click)="currentYear = currentYear - 1; initMonths(); loadActivities()"
+              matTooltip="Ano anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      
+      <span class="year-display">{{currentYear}}</span>
+      
+      <button mat-icon-button 
+              (click)="currentYear = currentYear + 1; initMonths(); loadActivities()"
+              matTooltip="Próximo ano">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Legenda -->
+  <div class="calendar-legend">
+    <div class="legend-item">
+      <div class="legend-color today-color"></div>
+      <span>Hoje</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color activity-color"></div>
+      <span>Dias com atividades</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color normal-color"></div>
+      <span>Dias normais</span>
+    </div>
+  </div>
+
+  <!-- Grid dos meses -->
+  <div class="months-grid" *ngIf="!loading">
+    <div class="month-card" *ngFor="let month of months">
+      <!-- Header do mês -->
+      <div class="month-header">
+        <h3 class="month-name">{{month.name}}</h3>
+        <div class="month-stats" *ngIf="getMonthActivityCount(month.index) > 0">
+          <span class="activity-count">{{getMonthActivityCount(month.index)}} atividades</span>
+        </div>
+      </div>
+
+      <!-- Grid dos dias da semana -->
+      <div class="weekdays-header">
+        <div class="weekday" *ngFor="let day of weekdays">{{day}}</div>
+      </div>
+
+      <!-- Grid dos dias -->
+      <div class="days-grid">
+        <!-- Células vazias para o início do mês -->
+        <div class="day-cell empty" 
+             *ngFor="let empty of getEmptyCells(month)">
+        </div>
+
+        <!-- Dias do mês -->
+        <div class="day-cell" 
+             *ngFor="let day of getMonthDays(month)"
+             [class.has-activity]="hasActivity(month.index, day)"
+             [class.today]="isToday(month.index, day)"
+             [class.clickable]="hasActivity(month.index, day)"
+             (click)="navigateToDay(month.index, day)"
+             [matTooltip]="getDayTooltip(month.index, day)"
+             matTooltipPosition="above">
+          
+          <span class="day-number">{{day}}</span>
+          
+          <!-- Indicador de atividades -->
+          <div class="activity-indicators" *ngIf="hasActivity(month.index, day)">
+            <div class="activity-dot" 
+                 *ngFor="let activity of getActivitiesForDay(month.index, day).slice(0, 3)">
+            </div>
+            <div class="more-activities" 
+                 *ngIf="getActivityCount(month.index, day) > 3">
+              +{{getActivityCount(month.index, day) - 3}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicador de loading -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p class="loading-text">Carregando atividades do ano {{currentYear}}...</p>
+    <p class="loading-subtext">Isso pode levar alguns segundos</p>
+  </div>
+
+  <!-- Estatísticas anuais -->
+  <div class="annual-stats" *ngIf="!loading">
+    <div class="stats-card">
+      <div class="stats-icon">
+        <mat-icon>event</mat-icon>
+      </div>
+      <div class="stats-content">
+        <h4>Total de Atividades</h4>
+        <span class="stats-number">{{getTotalActivities()}}</span>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-icon">
+        <mat-icon>today</mat-icon>
+      </div>
+      <div class="stats-content">
+        <h4>Dias com Atividades</h4>
+        <span class="stats-number">{{getDaysWithActivities()}}</span>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stats-content">
+        <h4>Mês Mais Ativo</h4>
+        <span class="stats-number">{{getMostActiveMonth()}}</span>
+      </div>
+    </div>
+  </div>
+</div>

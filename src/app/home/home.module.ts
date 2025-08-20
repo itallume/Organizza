@@ -30,6 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivityFormComponent } from './activity-form/activity-form.component';
+import { CalendarioAnualComponent } from './calendario-anual/calendario-anual.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { ActivityFormComponent } from './activity-form/activity-form.component';
     ActivityDeleteComponent,
     ActivityListComponent,
     ActivityFormComponent,
+    CalendarioAnualComponent,
   ],
   imports: [
     CommonModule,
@@ -69,7 +72,8 @@ import { ActivityFormComponent } from './activity-form/activity-form.component';
     MatNativeDateModule,
     MatSelectModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
 
   ],
 
@@ -81,6 +85,7 @@ import { ActivityFormComponent } from './activity-form/activity-form.component';
     ActivityDeleteComponent,
     ActivityListComponent,
     ActivityFormComponent,
+    CalendarioAnualComponent,
   ]
 })
 export class HomeModule {

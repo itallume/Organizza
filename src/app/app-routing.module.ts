@@ -7,6 +7,7 @@ import {CalendarCardComponent} from './home/calendar-card/calendar-card.componen
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ActivityListComponent } from './home/activity-list/activity-list.component';
 import { ActivityFormComponent } from './home/activity-form/activity-form.component';
+import { CalendarioAnualComponent } from './home/calendario-anual/calendario-anual.component';
 
 const routes: Routes =
   [
@@ -30,6 +31,10 @@ const routes: Routes =
     },
     { path : 'activity-register',
       component: ActivityFormComponent,
+      canActivate: [AuthGuard]
+    },
+    { path : 'calendario-anual',
+      component: CalendarioAnualComponent,
       canActivate: [AuthGuard]
     },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
